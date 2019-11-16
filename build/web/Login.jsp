@@ -30,7 +30,7 @@
             <div class="w3-display-middle  w3-wide w3-text-light-grey w3-center ">
                 <div class="w3-border w3-animate-top w3-padding-large ">
                     <div class="w3-light-grey  w3-padding-large w3-animate-top">
-                        <h1 class="w3-jumbo w3-animate-top ">LOGIN</h1>
+                        <h1 class="w3-jumbo w3-animate-top ">Login</h1>
                         <hr class="w3-border-grey w3-animate-top" style="margin:auto;width:40%">
                         <form action="Login" method="post" class="w3-large w3-center w3-animate-top ">
                             <p>Username : <input type="text"  name="username" class="w3-round-large" required/><br>
