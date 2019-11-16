@@ -30,11 +30,11 @@
         }
     </style>
     <body>
-        <c:if test="${user.equals('teacher')}">
+        <c:if test="${user.getRole().equals('teacher')}">
             <div class="w3-container w3-teal">
                 <h1>Quiz Me Hard</h1>
                 <div class="w3-display-topright w3-padding-large ">
-                    <span>Teacher:${user}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+                    <span>Teacher:${user.getFullname()}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
                 </div>
                 <h5>
                     <p> </p>
@@ -77,11 +77,11 @@
                 </table>
             </div>
         </c:if>
-        <c:if test="${user.equals('student')}">
+        <c:if test="${user.getRole().equals('student')}">
             <div class="w3-container w3-teal">
                 <h1>Quiz Me Hard</h1>
                 <div class="w3-display-topright w3-padding-large ">
-                    <span>Student:${user}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+                    <span>Student:${user.getFullname()}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
                 </div>
                 <h5>
                     <p> </p>

@@ -5,19 +5,31 @@
  */
 package Servlet;
 
+import Entity.Users;
+import Model.Controller.UserController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Asus
  */
 public class LoginServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "QuizMeHard-minimizePU")
+    EntityManagerFactory emf;
+
+    @Resource
+    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,10 +42,28 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String role = request.getParameter("role");
-        session.setAttribute("user", role);
-        getServletContext().getRequestDispatcher("/ClassInfo.jsp").forward(request, response);
+        if (request.getParameter("username") == null || request.getParameter("username").isEmpty()
+                || request.getParameter("password") == null || request.getParameter("password").isEmpty()) {
+            request.setAttribute("message", "invalid1");
+            getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+        } else {
+            UserController uc = new UserController(emf, utx);
+            Users user = uc.findUserByUsername(request.getParameter("username"));
+            if (user == null) {
+                request.setAttribute("message", "invalid2");
+                getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+            } else {
+                if (user.getUsername().equals(request.getParameter("username"))
+                        && user.getPassword().equals(request.getParameter("password"))) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user);
+                    getServletContext().getRequestDispatcher("/ClassInfo.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("message", "invalid3");
+                    getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+                }
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -48,9 +78,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-processRequest(request, response);
-
+        //getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
