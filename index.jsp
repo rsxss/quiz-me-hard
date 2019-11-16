@@ -18,7 +18,7 @@
             body,h1 {font-family: "Raleway", sans-serif}
             body, html {height: 100%}
             .bgimg {
-                background-image: url('images/bg4.jpg');
+                background-image: url('assets/images/bg4.jpg');
                 min-height: 100%;
                 background-position: center;
                 background-size: cover;
@@ -26,7 +26,6 @@
         </style>
     </head>
     <body>
-
         <div class="bgimg w3-display-container w3-text-white ">
             <div class="w3-display-middle w3-padding-large  w3-wide w3-text-light-grey w3-center">
                 <div class=" w3-padding-large" style="margin-top: -15%">
