@@ -39,7 +39,7 @@
                     <p class="w3-large w3-animate-top">สามารถที่จะแบ่งห้องเรียนสำหรับแต่ละวิชา สามารถตรวจข้อสอบและแสดงผลคะแนนได้ </p>
                  </div>
             </div>         
-                <a class="w3-display-middle w3-padding-large w3-xlarge w3-btn w3-border w3-round-xlarge w3-sand w3-text-grey" style="margin-top: 13%" href="Login.jsp">Login</a>
+                <a class="w3-display-middle w3-padding-large w3-xlarge w3-btn w3-border w3-round-xlarge w3-sand w3-text-grey" style="margin-top: 13%" href="Login.jsp">Let's do an exam!</a>
         </div>
     </body>
 </html>

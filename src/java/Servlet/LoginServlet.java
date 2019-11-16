@@ -50,7 +50,8 @@ public class LoginServlet extends HttpServlet {
             UserController uc = new UserController(emf, utx);
             Users user = uc.findUserByUsername(request.getParameter("username"));
             if (user == null) {
-                request.setAttribute("message", "invalid2");
+                request.setAttribute("message", "Use Not Found");
+                request.setAttribute("c", "red");
                 getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
             } else {
                 if (user.getUsername().equals(request.getParameter("username"))
@@ -59,7 +60,8 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user", user);
                     getServletContext().getRequestDispatcher("/ClassInfo.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("message", "invalid3");
+                    request.setAttribute("message", "Use Not Found");
+                    request.setAttribute("c", "red");
                     getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
                 }
             }
@@ -78,8 +80,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-        processRequest(request, response);
+        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+//        processRequest(request, response);
     }
 
     /**

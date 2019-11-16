@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>Authentication</filter-name>
+        <filter-class>filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>TeacherOnlyFilter</filter-name>
+        <filter-class>filter.TeacherOnlyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>TeacherOnlyFilter</filter-name>
+        <servlet-name>ViewExamServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <servlet-name>ClassInfoServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <servlet-name>SelectExamServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <servlet-name>ExamServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <servlet-name>LogoutServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <servlet-name>AddClassServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <servlet-name>ViewExamServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <servlet-name>AddExamSevlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>ClassInfoServlet</servlet-name>
         <servlet-class>Servlet.ClassInfoServlet</servlet-class>
@@ -7,10 +63,6 @@
     <servlet>
         <servlet-name>SelectExamServlet</servlet-name>
         <servlet-class>Servlet.SelectExamServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SelectClassServlet</servlet-name>
-        <servlet-class>Servlet.SelectClassServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -39,10 +91,6 @@
     <servlet-mapping>
         <servlet-name>ClassInfoServlet</servlet-name>
         <url-pattern>/ClassInfo</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SelectClassServlet</servlet-name>
-        <url-pattern>/SelectClass</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SelectExamServlet</servlet-name>

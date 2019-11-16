@@ -37,7 +37,7 @@
                             <p>Password : <input type="password"  name="password" class="w3-round-large" required/><br>                    
                                 <br><label><input type="submit" value="Login"  class="w3-btn w3-teal w3-border w3-border-white w3-round-xlarge "></label>
                         </form>
-                        <div class="w3-container w3-green ">
+                        <div class="w3-container w3-${c} ">
                             ${message}
                         </div>
                     </div>

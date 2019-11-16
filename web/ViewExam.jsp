@@ -37,7 +37,6 @@
                 <span>Teacher:${user.getFullname()}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
             </div>
             <h5>
-                <a href="SelectClass" >Classes</a> /
                 <a href="SelectExam" >Exam</a> /
                 Testing Cookies
             </h5>
@@ -45,8 +44,7 @@
         <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:10%">
             <h3 class="w3-bar-item">Menu</h3>
             <a href="ClassInfo" class="w3-bar-item w3-button">Class Info</a>
-            <a href="SelectExam" class="w3-bar-item w3-button w3-grey">Exam</a>
-            <div class=" w3-display-bottomleft" style="margin: 10px;margin-bottom: 50px"><a href="SelectClass">Back to Classes</a></div>
+            <a href="SelectExam" class="w3-bar-item w3-button w3-grey">Exam</a>       
         </div>
         <div class="w3-container" style="margin-left:10%">
             <h1>Testing Cookies</h1>

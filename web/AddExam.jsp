@@ -38,7 +38,7 @@
             <div class="w3-container w3-teal" >
                 <h1>Quiz Me Hard</h1>
                 <div class="w3-display-topright w3-padding-large ">
-                    <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+                    <span>Teacher:${user.getFullname()} </span><a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
                 </div>
                 <h5>
                     <p> </p>
