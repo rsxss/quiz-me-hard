@@ -36,7 +36,7 @@
                         <span style="font-size:50px;line-height:2.5em;opacity:0.5">❝</span>
                         <p class="w3-large w3-animate-top" style="margin-top:-40px"><i>เว็บสำหรับในการฝึกเขียนและทดสอบโปรแกรมภาษา Python</i></p>
                     </div>
-                    <p class="w3-large w3-animate-top">สามารถที่จะแบ่งห้องเรียนสำหรับแต่ละวิชา สามารถตรวจข้อสอบและแสดงผลคะแนน </p>
+                    <p class="w3-large w3-animate-top">สามารถที่จะแบ่งห้องเรียนสำหรับแต่ละวิชา สามารถตรวจข้อสอบและแสดงผลคะแนนได้ </p>
                  </div>
             </div>         
                 <a class="w3-display-middle w3-padding-large w3-xlarge w3-btn w3-border w3-round-xlarge w3-sand w3-text-grey" style="margin-top: 13%" href="Login.jsp">Login</a>
