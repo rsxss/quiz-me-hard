@@ -50,51 +50,6 @@
         }
     </style>
     <body>
-        <c:if test="${user.equals('admin')}">
-            <div class="w3-container w3-teal">
-                <h1>Quiz Me Hard</h1>
-                <div class="w3-display-topright w3-padding-large ">
-                    <span>Admin:${user}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
-                </div> 
-                <h5>
-                    <a href="SelectClass" >Classes</a> /
-                    <a href="SelectExam" >Exam</a> /
-                    <a href="ViewExam">Testing Cookies</a> /
-                    001
-                </h5>
-            </div>
-            <div class="w3-sidebar w3-yellow w3-bar-block" style="width:25%">
-                <h3 class="w3-bar-item">Instruction</h3>
-                <p class="w3-bar-item">As you can see, once there's enough text in this box, the box will grow scroll bars... that's why we call it a scroll box! You could also place an image into the scroll box.</p>
-            </div>
-            <div style="margin-left:25%">
-                <div class="w3-container" >
-                    <p></p>
-                    <textarea id="codeeditor" ></textarea>
-                    <center><button  class="w3-button  w3-teal" style="margin-top: 10px">&blacktriangleright; Run</button></center>
-                    Output:
-                    <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
-                    <center><button  class="w3-button  w3-yellow" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
-                </div>
-                <script>
-                    var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
-                        mode: "python",
-                        lineNumbers: true,
-                        autofocus: true,
-                        extraKeys: {"Ctrl-Space": "autocomplete"}
-                    });
-                    editor.setSize("100%", 250)
-                </script>
-                <script>
-                    function checkSubmit() {
-                        if (confirm("Are you sure you want to submit?")) {
-                            alert("Your Answer has been submitted.");
-                            window.location.replace("SelectExam");
-                        }
-                    }
-                </script>
-            </div>
-        </c:if>
         <c:if test="${user.equals('teacher')}">
             <div class="w3-container w3-teal">
                 <h1>Quiz Me Hard</h1>
@@ -102,7 +57,6 @@
                     <span>Teacher:${user}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
                 </div> 
                 <h5>
-                    <a href="SelectClass" >Classes</a> /
                     <a href="SelectExam" >Exam</a> /
                     <a href="ViewExam">Testing Cookies</a> /
                     001
@@ -147,7 +101,6 @@
                     <span>Student:${user}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
                 </div> 
                 <h5>
-                    <a href="SelectClass" >Classes</a> /
                     <a href="SelectExam" >Exam</a> /
                     Testing Cookies
                 </h5>

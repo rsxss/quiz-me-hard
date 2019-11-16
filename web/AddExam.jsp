@@ -38,17 +38,20 @@
             <div class="w3-container w3-teal" >
                 <h1>Quiz Me Hard</h1>
                 <div class="w3-display-topright w3-padding-large ">
-                    <a href="" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+                    <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
                 </div>
+                <h5>
+                    <p> </p>
+                </h5>
             </div>
             <div class="box w3-display-middle w3-padding-large" >
                 <h5>Add Exam</h5>
-                <form action=""  method="post">
-                    <p>Class name : <input type="text" name="classname" class="w3-round-large"></p>
+                <form action="" name="usrform" method="post">
+                    <p>Exam name : <input type="text" name="examname" placeholder="Enter here..." class="w3-input w3-round"></p>
                     <p>Description :</p>
-                    <p><textarea rows="5" cols="70" name="comment" form="usrform" placeholder="Enter here..." class="w3-round-large"></textarea>
+                    <p><textarea rows="5" cols="70" name="comment" form="usrform" placeholder="Enter here..." class="w3-input w3-round" style="resize: none"></textarea>
                     <p>Test Case :</p>
-                    <p><textarea rows="5" cols="70" name="comment" form="usrform" placeholder="Enter here..." class="w3-round-large"></textarea>
+                    <p><textarea rows="5" cols="70" name="comment" form="usrform" placeholder="Enter here..." class="w3-input w3-round" style="resize: none"></textarea>
                     <div class="w3-right  w3-padding-large ">
                         <a href="SelectExam" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge">
                     </div>

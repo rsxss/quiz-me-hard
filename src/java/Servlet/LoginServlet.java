@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String role = request.getParameter("role");
         session.setAttribute("user", role);
-        getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/ClassInfo.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -36,7 +36,7 @@
                             <p>Username : <input type="text"  name="username" class="w3-round-large" required/><br>
                             <p>Password : <input type="password"  name="password" class="w3-round-large" required/><br>                    
                                 <br><label><input type="submit" value="Login"  class="w3-btn w3-teal w3-border w3-border-white w3-round-xlarge "></label>
-                                <br><a href="Login?role=admin">Admin</a> <a href="Login?role=teacher">Teacher</a> <a href="Login?role=student">Student</a>
+                                <br><a href="Login?role=teacher">Teacher</a> <a href="Login?role=student">Student</a>
                         </form>
                         <div class="w3-container w3-green ">
                             ${message}
