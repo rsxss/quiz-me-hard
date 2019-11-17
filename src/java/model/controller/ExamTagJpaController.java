@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jpa.controller;
+package model.controller;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,18 +14,19 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
-import jpa.controller.exceptions.NonexistentEntityException;
-import jpa.controller.exceptions.RollbackFailureException;
-import jpa.entities.ClassroomExam;
-import jpa.entities.ClassroomExamStudentScore;
+import model.controller.exceptions.NonexistentEntityException;
+import model.controller.exceptions.RollbackFailureException;
+import model.entities.ClassroomExam;
+import model.entities.ExamTag;
+import model.entities.Tag;
 
 /**
  *
  * @author NATWORPONGLOYSWAI
  */
-public class ClassroomExamStudentScoreJpaController implements Serializable {
+public class ExamTagJpaController implements Serializable {
 
-    public ClassroomExamStudentScoreJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public ExamTagJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -36,20 +37,29 @@ public class ClassroomExamStudentScoreJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(ClassroomExamStudentScore classroomExamStudentScore) throws RollbackFailureException, Exception {
+    public void create(ExamTag examTag) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            ClassroomExam examId = classroomExamStudentScore.getExamId();
+            ClassroomExam examId = examTag.getExamId();
             if (examId != null) {
                 examId = em.getReference(examId.getClass(), examId.getId());
-                classroomExamStudentScore.setExamId(examId);
+                examTag.setExamId(examId);
             }
-            em.persist(classroomExamStudentScore);
+            Tag tagId = examTag.getTagId();
+            if (tagId != null) {
+                tagId = em.getReference(tagId.getClass(), tagId.getId());
+                examTag.setTagId(tagId);
+            }
+            em.persist(examTag);
             if (examId != null) {
-                examId.getClassroomExamStudentScoreCollection().add(classroomExamStudentScore);
+                examId.getExamTagCollection().add(examTag);
                 examId = em.merge(examId);
+            }
+            if (tagId != null) {
+                tagId.getExamTagCollection().add(examTag);
+                tagId = em.merge(tagId);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -66,26 +76,40 @@ public class ClassroomExamStudentScoreJpaController implements Serializable {
         }
     }
 
-    public void edit(ClassroomExamStudentScore classroomExamStudentScore) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(ExamTag examTag) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            ClassroomExamStudentScore persistentClassroomExamStudentScore = em.find(ClassroomExamStudentScore.class, classroomExamStudentScore.getId());
-            ClassroomExam examIdOld = persistentClassroomExamStudentScore.getExamId();
-            ClassroomExam examIdNew = classroomExamStudentScore.getExamId();
+            ExamTag persistentExamTag = em.find(ExamTag.class, examTag.getId());
+            ClassroomExam examIdOld = persistentExamTag.getExamId();
+            ClassroomExam examIdNew = examTag.getExamId();
+            Tag tagIdOld = persistentExamTag.getTagId();
+            Tag tagIdNew = examTag.getTagId();
             if (examIdNew != null) {
                 examIdNew = em.getReference(examIdNew.getClass(), examIdNew.getId());
-                classroomExamStudentScore.setExamId(examIdNew);
+                examTag.setExamId(examIdNew);
             }
-            classroomExamStudentScore = em.merge(classroomExamStudentScore);
+            if (tagIdNew != null) {
+                tagIdNew = em.getReference(tagIdNew.getClass(), tagIdNew.getId());
+                examTag.setTagId(tagIdNew);
+            }
+            examTag = em.merge(examTag);
             if (examIdOld != null && !examIdOld.equals(examIdNew)) {
-                examIdOld.getClassroomExamStudentScoreCollection().remove(classroomExamStudentScore);
+                examIdOld.getExamTagCollection().remove(examTag);
                 examIdOld = em.merge(examIdOld);
             }
             if (examIdNew != null && !examIdNew.equals(examIdOld)) {
-                examIdNew.getClassroomExamStudentScoreCollection().add(classroomExamStudentScore);
+                examIdNew.getExamTagCollection().add(examTag);
                 examIdNew = em.merge(examIdNew);
+            }
+            if (tagIdOld != null && !tagIdOld.equals(tagIdNew)) {
+                tagIdOld.getExamTagCollection().remove(examTag);
+                tagIdOld = em.merge(tagIdOld);
+            }
+            if (tagIdNew != null && !tagIdNew.equals(tagIdOld)) {
+                tagIdNew.getExamTagCollection().add(examTag);
+                tagIdNew = em.merge(tagIdNew);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -96,9 +120,9 @@ public class ClassroomExamStudentScoreJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = classroomExamStudentScore.getId();
-                if (findClassroomExamStudentScore(id) == null) {
-                    throw new NonexistentEntityException("The classroomExamStudentScore with id " + id + " no longer exists.");
+                Integer id = examTag.getId();
+                if (findExamTag(id) == null) {
+                    throw new NonexistentEntityException("The examTag with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -114,19 +138,24 @@ public class ClassroomExamStudentScoreJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            ClassroomExamStudentScore classroomExamStudentScore;
+            ExamTag examTag;
             try {
-                classroomExamStudentScore = em.getReference(ClassroomExamStudentScore.class, id);
-                classroomExamStudentScore.getId();
+                examTag = em.getReference(ExamTag.class, id);
+                examTag.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The classroomExamStudentScore with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The examTag with id " + id + " no longer exists.", enfe);
             }
-            ClassroomExam examId = classroomExamStudentScore.getExamId();
+            ClassroomExam examId = examTag.getExamId();
             if (examId != null) {
-                examId.getClassroomExamStudentScoreCollection().remove(classroomExamStudentScore);
+                examId.getExamTagCollection().remove(examTag);
                 examId = em.merge(examId);
             }
-            em.remove(classroomExamStudentScore);
+            Tag tagId = examTag.getTagId();
+            if (tagId != null) {
+                tagId.getExamTagCollection().remove(examTag);
+                tagId = em.merge(tagId);
+            }
+            em.remove(examTag);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -142,19 +171,19 @@ public class ClassroomExamStudentScoreJpaController implements Serializable {
         }
     }
 
-    public List<ClassroomExamStudentScore> findClassroomExamStudentScoreEntities() {
-        return findClassroomExamStudentScoreEntities(true, -1, -1);
+    public List<ExamTag> findExamTagEntities() {
+        return findExamTagEntities(true, -1, -1);
     }
 
-    public List<ClassroomExamStudentScore> findClassroomExamStudentScoreEntities(int maxResults, int firstResult) {
-        return findClassroomExamStudentScoreEntities(false, maxResults, firstResult);
+    public List<ExamTag> findExamTagEntities(int maxResults, int firstResult) {
+        return findExamTagEntities(false, maxResults, firstResult);
     }
 
-    private List<ClassroomExamStudentScore> findClassroomExamStudentScoreEntities(boolean all, int maxResults, int firstResult) {
+    private List<ExamTag> findExamTagEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(ClassroomExamStudentScore.class));
+            cq.select(cq.from(ExamTag.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -166,20 +195,20 @@ public class ClassroomExamStudentScoreJpaController implements Serializable {
         }
     }
 
-    public ClassroomExamStudentScore findClassroomExamStudentScore(Integer id) {
+    public ExamTag findExamTag(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(ClassroomExamStudentScore.class, id);
+            return em.find(ExamTag.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getClassroomExamStudentScoreCount() {
+    public int getExamTagCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<ClassroomExamStudentScore> rt = cq.from(ClassroomExamStudentScore.class);
+            Root<ExamTag> rt = cq.from(ExamTag.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

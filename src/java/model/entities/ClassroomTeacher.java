@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jpa.entities;
+package model.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,22 +16,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author NATWORPONGLOYSWAI
  */
 @Entity
-@Table(name = "ClassroomMember")
+@Table(name = "ClassroomTeacher")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ClassroomMember.findAll", query = "SELECT c FROM ClassroomMember c")
-    , @NamedQuery(name = "ClassroomMember.findById", query = "SELECT c FROM ClassroomMember c WHERE c.id = :id")})
-public class ClassroomMember implements Serializable {
+    @NamedQuery(name = "ClassroomTeacher.findAll", query = "SELECT c FROM ClassroomTeacher c")
+    , @NamedQuery(name = "ClassroomTeacher.findById", query = "SELECT c FROM ClassroomTeacher c WHERE c.id = :id")})
+public class ClassroomTeacher implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,19 +37,14 @@ public class ClassroomMember implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "classroom_id", referencedColumnName = "id")
+    @JoinColumn(name = "classroom_member_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Classroom classroomId;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private User userId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "classroomMemberId")
-    private Collection<ClassroomTeacher> classroomTeacherCollection;
+    private ClassroomMember classroomMemberId;
 
-    public ClassroomMember() {
+    public ClassroomTeacher() {
     }
 
-    public ClassroomMember(Integer id) {
+    public ClassroomTeacher(Integer id) {
         this.id = id;
     }
 
@@ -65,29 +56,12 @@ public class ClassroomMember implements Serializable {
         this.id = id;
     }
 
-    public Classroom getClassroomId() {
-        return classroomId;
+    public ClassroomMember getClassroomMemberId() {
+        return classroomMemberId;
     }
 
-    public void setClassroomId(Classroom classroomId) {
-        this.classroomId = classroomId;
-    }
-
-    public User getUserId() {
-        return userId;
-    }
-
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
-
-    @XmlTransient
-    public Collection<ClassroomTeacher> getClassroomTeacherCollection() {
-        return classroomTeacherCollection;
-    }
-
-    public void setClassroomTeacherCollection(Collection<ClassroomTeacher> classroomTeacherCollection) {
-        this.classroomTeacherCollection = classroomTeacherCollection;
+    public void setClassroomMemberId(ClassroomMember classroomMemberId) {
+        this.classroomMemberId = classroomMemberId;
     }
 
     @Override
@@ -100,10 +74,10 @@ public class ClassroomMember implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ClassroomMember)) {
+        if (!(object instanceof ClassroomTeacher)) {
             return false;
         }
-        ClassroomMember other = (ClassroomMember) object;
+        ClassroomTeacher other = (ClassroomTeacher) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -112,7 +86,7 @@ public class ClassroomMember implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.entities.ClassroomMember[ id=" + id + " ]";
+        return "jpa.entities.ClassroomTeacher[ id=" + id + " ]";
     }
     
 }

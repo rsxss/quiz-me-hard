@@ -3,33 +3,38 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jpa.entities;
+package model.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author NATWORPONGLOYSWAI
  */
 @Entity
-@Table(name = "ClassroomTeacher")
+@Table(name = "Tag")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ClassroomTeacher.findAll", query = "SELECT c FROM ClassroomTeacher c")
-    , @NamedQuery(name = "ClassroomTeacher.findById", query = "SELECT c FROM ClassroomTeacher c WHERE c.id = :id")})
-public class ClassroomTeacher implements Serializable {
+    @NamedQuery(name = "Tag.findAll", query = "SELECT t FROM Tag t")
+    , @NamedQuery(name = "Tag.findById", query = "SELECT t FROM Tag t WHERE t.id = :id")
+    , @NamedQuery(name = "Tag.findByTagName", query = "SELECT t FROM Tag t WHERE t.tagName = :tagName")})
+public class Tag implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,15 +42,24 @@ public class ClassroomTeacher implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "classroom_member_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private ClassroomMember classroomMemberId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "tag_name")
+    private String tagName;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tagId")
+    private Collection<ExamTag> examTagCollection;
 
-    public ClassroomTeacher() {
+    public Tag() {
     }
 
-    public ClassroomTeacher(Integer id) {
+    public Tag(Integer id) {
         this.id = id;
+    }
+
+    public Tag(Integer id, String tagName) {
+        this.id = id;
+        this.tagName = tagName;
     }
 
     public Integer getId() {
@@ -56,12 +70,21 @@ public class ClassroomTeacher implements Serializable {
         this.id = id;
     }
 
-    public ClassroomMember getClassroomMemberId() {
-        return classroomMemberId;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setClassroomMemberId(ClassroomMember classroomMemberId) {
-        this.classroomMemberId = classroomMemberId;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    @XmlTransient
+    public Collection<ExamTag> getExamTagCollection() {
+        return examTagCollection;
+    }
+
+    public void setExamTagCollection(Collection<ExamTag> examTagCollection) {
+        this.examTagCollection = examTagCollection;
     }
 
     @Override
@@ -74,10 +97,10 @@ public class ClassroomTeacher implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ClassroomTeacher)) {
+        if (!(object instanceof Tag)) {
             return false;
         }
-        ClassroomTeacher other = (ClassroomTeacher) object;
+        Tag other = (Tag) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -86,7 +109,7 @@ public class ClassroomTeacher implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.entities.ClassroomTeacher[ id=" + id + " ]";
+        return "jpa.entities.Tag[ id=" + id + " ]";
     }
     
 }

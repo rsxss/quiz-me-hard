@@ -32,7 +32,7 @@
         </style>
     </head>
     <body>
-
+        <c:out value="Welcome: ${sessionScope.user.firstName} ${sessionScope.user.lastName}"/>
         <c:if test="${user.equals('admin')}">
             <div class="bgimg w3-display-container w3-text-white ">
                 <div class="w3-container w3-teal">

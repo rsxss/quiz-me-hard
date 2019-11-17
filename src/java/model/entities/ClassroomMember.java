@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jpa.entities;
+package model.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -14,12 +14,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,13 +28,12 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author NATWORPONGLOYSWAI
  */
 @Entity
-@Table(name = "Tag")
+@Table(name = "ClassroomMember")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Tag.findAll", query = "SELECT t FROM Tag t")
-    , @NamedQuery(name = "Tag.findById", query = "SELECT t FROM Tag t WHERE t.id = :id")
-    , @NamedQuery(name = "Tag.findByTagName", query = "SELECT t FROM Tag t WHERE t.tagName = :tagName")})
-public class Tag implements Serializable {
+    @NamedQuery(name = "ClassroomMember.findAll", query = "SELECT c FROM ClassroomMember c")
+    , @NamedQuery(name = "ClassroomMember.findById", query = "SELECT c FROM ClassroomMember c WHERE c.id = :id")})
+public class ClassroomMember implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,24 +41,20 @@ public class Tag implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "tag_name")
-    private String tagName;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tagId")
-    private Collection<ExamTag> examTagCollection;
+    @JoinColumn(name = "classroom_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Classroom classroomId;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private User userId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "classroomMemberId")
+    private Collection<ClassroomTeacher> classroomTeacherCollection;
 
-    public Tag() {
+    public ClassroomMember() {
     }
 
-    public Tag(Integer id) {
+    public ClassroomMember(Integer id) {
         this.id = id;
-    }
-
-    public Tag(Integer id, String tagName) {
-        this.id = id;
-        this.tagName = tagName;
     }
 
     public Integer getId() {
@@ -70,21 +65,29 @@ public class Tag implements Serializable {
         this.id = id;
     }
 
-    public String getTagName() {
-        return tagName;
+    public Classroom getClassroomId() {
+        return classroomId;
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setClassroomId(Classroom classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     @XmlTransient
-    public Collection<ExamTag> getExamTagCollection() {
-        return examTagCollection;
+    public Collection<ClassroomTeacher> getClassroomTeacherCollection() {
+        return classroomTeacherCollection;
     }
 
-    public void setExamTagCollection(Collection<ExamTag> examTagCollection) {
-        this.examTagCollection = examTagCollection;
+    public void setClassroomTeacherCollection(Collection<ClassroomTeacher> classroomTeacherCollection) {
+        this.classroomTeacherCollection = classroomTeacherCollection;
     }
 
     @Override
@@ -97,10 +100,10 @@ public class Tag implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Tag)) {
+        if (!(object instanceof ClassroomMember)) {
             return false;
         }
-        Tag other = (Tag) object;
+        ClassroomMember other = (ClassroomMember) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -109,7 +112,7 @@ public class Tag implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.entities.Tag[ id=" + id + " ]";
+        return "jpa.entities.ClassroomMember[ id=" + id + " ]";
     }
     
 }

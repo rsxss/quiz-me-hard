@@ -5,36 +5,28 @@
  */
 package Servlet;
 
+//import model.controller.UserJpaController;
+
+import config.App;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.utils.Authentication;
+import model.controller.UserJpaController;
+import model.entities.User;
 
 /**
  *
  * @author Asus
  */
 public class LoginServlet extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String role = request.getParameter("role");
-        session.setAttribute("user", role);
-        getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -48,9 +40,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-processRequest(request, response);
-
+        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
     }
 
     /**
@@ -64,7 +54,27 @@ processRequest(request, response);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        HttpSession session = request.getSession();
+//        String role = request.getParameter("role");
+//        session.setAttribute("user", role);
+        String username = request.getParameter("username").trim();
+        String password = request.getParameter("password").trim();
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
+        
+        UserJpaController ujc = new UserJpaController(emf);
+        User user = ujc.findByUsername(username);
+        
+        try {
+            if(!Objects.isNull(user)&&Authentication.authenticate(user, password)){
+               HttpSession session = request.getSession();
+               session.setAttribute("user", user);
+               getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
+               return;
+            } getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+        } finally {
+            emf.close();
+        }
     }
 
     /**

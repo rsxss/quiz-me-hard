@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jpa.entities;
+package model.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByIsAdmin", query = "SELECT u FROM User u WHERE u.isAdmin = :isAdmin")})
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
