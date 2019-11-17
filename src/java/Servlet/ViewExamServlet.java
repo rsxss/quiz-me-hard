@@ -5,19 +5,29 @@
  */
 package Servlet;
 
+import Entity.Exam;
+import Model.Controller.ExamController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Asus
  */
 public class ViewExamServlet extends HttpServlet {
+     @PersistenceUnit(unitName = "QuizMeHard-minimizePU")
+    EntityManagerFactory emf;
 
+    @Resource
+    UserTransaction utx;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,6 +39,10 @@ public class ViewExamServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int eid = Integer.valueOf(request.getParameter("id"));
+        ExamController ec = new ExamController(emf, utx);
+        Exam e = ec.findExamById(eid);
+        request.setAttribute("exam", e);
          getServletContext().getRequestDispatcher("/ViewExam.jsp").forward(request, response);
     }
 

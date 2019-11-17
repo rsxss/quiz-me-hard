@@ -9,6 +9,8 @@ import Entity.Users;
 import Model.Controller.UserController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -58,6 +60,8 @@ public class LoginServlet extends HttpServlet {
                         && user.getPassword().equals(request.getParameter("password"))) {
                     HttpSession session = request.getSession();
                     session.setAttribute("user", user);
+                    List<Users> ary = uc.findAllUsers();
+                    session.setAttribute("allUsers", ary);
                     getServletContext().getRequestDispatcher("/ClassInfo.jsp").forward(request, response);
                 } else {
                     request.setAttribute("message", "Use Not Found");

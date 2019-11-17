@@ -5,8 +5,10 @@
  */
 package Model.Controller;
 
+import Entity.Exam;
 import Entity.Users;
 import JPAController.UsersJpaController;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 
@@ -22,5 +24,11 @@ public class UserController {
     }
     public Users findUserByUsername(String username){
         return ujc.findUsersWithUsername(username);
+    }
+    public List<Users> findAllUsers(){
+        return ujc.findUsersEntities();
+    }
+    public Users findUserById(int id){
+        return ujc.findUsers(id);
     }
 }

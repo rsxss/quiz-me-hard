@@ -48,13 +48,25 @@
             <div class="w3-container" style="margin-left:10%">
                 <h1>Class Information</h1>
                 <h4>Class Name</h4>
-                x
+                <p>Python Programming</p>
                 <h4>Description</h4>
-                x
+                <p>Learn Python Programming with fun !!!</p>
                 <h4>Teacher</h4>
-                x
+                <ol>
+                    <c:forEach items="${allUsers}" var="u">
+                        <c:if test="${u.getRole().equals('teacher')}">
+                            <li>${u.getFullname()}</li>
+                            </c:if>
+                        </c:forEach>
+                </ol>
                 <h4>Member</h4>
-                <p>x</p>
+                <ol>
+                    <c:forEach items="${allUsers}" var="u">
+                        <c:if test="${u.getRole().equals('student')}">
+                            <li>${u.getFullname()}</li>
+                            </c:if>
+                        </c:forEach>
+                </ol> 
             </div>
         </c:if>
         <c:if test="${user.getRole().equals('student')}">
@@ -75,13 +87,25 @@
             <div class="w3-container" style="margin-left:10%">
                 <h1>Class Information</h1>
                 <h4>Class Name</h4>
-                x
+                <p>Python Programming</p>
                 <h4>Description</h4>
-                x
+                <p>Learn Python Programming with fun !!!</p>
                 <h4>Teacher</h4>
-                x
+                <ol>
+                    <c:forEach items="${allUsers}" var="u">
+                        <c:if test="${u.getRole().equals('teacher')}">
+                            <li>${u.getFullname()}</li>
+                            </c:if>
+                        </c:forEach>
+                </ol>
                 <h4>Member</h4>
-                <p>x</p>
+                <ol>
+                    <c:forEach items="${allUsers}" var="u">
+                        <c:if test="${u.getRole().equals('student')}">
+                            <li>${u.getFullname()}</li>
+                            </c:if>
+                        </c:forEach>
+                </ol> 
             </div>
         </c:if>
     </body>

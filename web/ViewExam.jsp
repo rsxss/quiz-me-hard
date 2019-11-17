@@ -30,48 +30,38 @@
         }
     </style>
     <body>
-    <c:if test="${user.getRole().equals('teacher')}">
-        <div class="w3-container w3-teal">
-            <h1>Quiz Me Hard</h1>
-            <div class="w3-display-topright w3-padding-large ">
-                <span>Teacher:${user.getFullname()}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+        <c:if test="${user.getRole().equals('teacher')}">
+            <div class="w3-container w3-teal">
+                <h1>Quiz Me Hard</h1>
+                <div class="w3-display-topright w3-padding-large ">
+                    <span>Teacher:${user.getFullname()}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+                </div>
+                <h5>
+                    <a href="SelectExam" >Exam</a> /
+                    ${exam.getName()}
+                </h5>
             </div>
-            <h5>
-                <a href="SelectExam" >Exam</a> /
-                Testing Cookies
-            </h5>
-        </div>
-        <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:10%">
-            <h3 class="w3-bar-item">Menu</h3>
-            <a href="ClassInfo" class="w3-bar-item w3-button">Class Info</a>
-            <a href="SelectExam" class="w3-bar-item w3-button w3-grey">Exam</a>       
-        </div>
-        <div class="w3-container" style="margin-left:10%">
-            <h1>Testing Cookies</h1>
-            <table class="w3-table w3-striped">
-                <tr>
-                    <th>StudentID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Score</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>001</td>
-                    <td>นายฮายาโมโตะ</td>
-                    <td>เกนชิโร่</td>
-                    <td>50</td>
-                    <td><a href="Exam" class="w3-button w3-teal" >Check</a></td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>นางสาวยุย</td>
-                    <td>ฮาจิบานะ</td>
-                    <td>90</td>
-                    <td><a href="Exam" class="w3-button w3-teal" >Check</a></td>
-                </tr>
-            </table>
-        </div>
-    </c:if>
-</body>
+            <div class="w3-container" >
+                <h1>${exam.getName()}</h1>
+                <table class="w3-table w3-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th></th>
+                    </tr>
+                    <c:forEach items="${allUsers}" var="u" varStatus="vs">
+                        <c:if test="${u.getRole().equals('student')}" >
+                            <tr>
+                                <td>${vs.count}</td>
+                                <td>${u.getFullname()}</td>
+                                <td>30</td>
+                                <td><a href="Exam?id=${exam.getEid()}&userid=${u.getUserid()}" class="w3-button w3-teal" >Check</a></td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </table>
+            </div>
+        </c:if>
+    </body>
 </html>

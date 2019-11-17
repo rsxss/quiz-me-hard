@@ -55,24 +55,14 @@
                         <th>Check</th>
                         <th><input type="button" value="Delete"></th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Testing Cookies</td>
-                        <td><a href="ViewExam" class="w3-button w3-teal" >View</a></td>
-                        <td><input type="checkbox"  class="w3-check"></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Testing Cake</td>
-                        <td><a href="ViewExam" class="w3-button w3-teal" >View</a></td>
-                        <td><input type="checkbox"  class="w3-check"></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Testing Coco</td>
-                        <td><a href="ViewExam" class="w3-button w3-teal" >View</a></td>
-                        <td><input type="checkbox"  class="w3-check"></td>
-                    </tr>
+                    <c:forEach items="${exams}" var="e">
+                        <tr>
+                            <td>${e.getEid()}</td>
+                            <td>${e.getName()}</td>
+                            <td><a href="ViewExam?id=${e.getEid()}" class="w3-button w3-teal" >View</a></td>
+                            <td><input type="checkbox"  class="w3-check"></td>
+                        </tr>
+                    </c:forEach>
                 </table>
             </div>
         </c:if>
@@ -100,24 +90,14 @@
                         <th>Score</th>
                         <th></th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Testing Cookies</td>
-                        <td>90</td>
-                        <td><a href="Exam" class="w3-button w3-teal" >Start</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Testing Cake</td>
-                        <td>20</td>
-                        <td><a href="Exam" class="w3-button w3-teal" >Start</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Testing Coco</td>
-                        <td></td>
-                        <td><a href="Exam" class="w3-button w3-teal" >Start</a></td>
-                    </tr>
+                    <c:forEach items="${exams}" var="e">
+                        <tr>
+                            <td>${e.getEid()}</td>
+                            <td>${e.getName()}</td>
+                            <td>20</td>
+                            <td><a href="Exam?id=${e.getEid()}" class="w3-button w3-teal" >Start</a></td>
+                        </tr>
+                    </c:forEach>
                 </table>
             </div>
         </c:if>

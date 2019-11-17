@@ -58,13 +58,13 @@
                 </div> 
                 <h5>
                     <a href="SelectExam" >Exam</a> /
-                    <a href="ViewExam">Testing Cookies</a> /
-                    001
+                    <a href="ViewExam?id=${exam.getEid()}">${exam.getName()}</a> /
+                    ${student.getFullname()}
                 </h5>
             </div>
             <div class="w3-sidebar w3-yellow w3-bar-block" style="width:25%">
                 <h3 class="w3-bar-item">Instruction</h3>
-                <p class="w3-bar-item">As you can see, once there's enough text in this box, the box will grow scroll bars... that's why we call it a scroll box! You could also place an image into the scroll box.</p>
+                <p class="w3-bar-item">${exam.getDescription()}</p>
             </div>
             <div style="margin-left:25%">
                 <div class="w3-container" >
@@ -102,12 +102,12 @@
                 </div> 
                 <h5>
                     <a href="SelectExam" >Exam</a> /
-                    Testing Cookies
+                    ${exam.getName()}
                 </h5>
             </div>
             <div class="w3-sidebar w3-yellow w3-bar-block" style="width:25%">
                 <h3 class="w3-bar-item">Instruction</h3>
-                <p class="w3-bar-item">As you can see, once there's enough text in this box, the box will grow scroll bars... that's why we call it a scroll box! You could also place an image into the scroll box.</p>
+                <p class="w3-bar-item">${exam.getDescription()}</p>
             </div>
             <div style="margin-left:25%">
                 <div class="w3-container" >

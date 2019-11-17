@@ -5,18 +5,32 @@
  */
 package Servlet;
 
+import Entity.Exam;
+import Entity.Users;
+import Model.Controller.ExamController;
+import Model.Controller.UserController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Asus
  */
 public class ExamServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "QuizMeHard-minimizePU")
+    EntityManagerFactory emf;
+
+    @Resource
+    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,6 +43,21 @@ public class ExamServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getParameter("userid") == null) {
+            int eid = Integer.valueOf(request.getParameter("id"));
+            ExamController ec = new ExamController(emf, utx);
+            Exam e = ec.findExamById(eid);
+            request.setAttribute("exam", e);
+            getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
+        }
+        int eid = Integer.valueOf(request.getParameter("id"));
+        int userid = Integer.valueOf(request.getParameter("userid"));
+        ExamController ec = new ExamController(emf, utx);
+        UserController uc = new UserController(emf, utx);
+        Exam e = ec.findExamById(eid);
+        Users u = uc.findUserById(userid);
+        request.setAttribute("exam", e);
+        request.setAttribute("student", u);
         getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
     }
 

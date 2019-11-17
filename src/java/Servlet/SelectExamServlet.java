@@ -5,19 +5,32 @@ package Servlet;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import Entity.Exam;
+import Model.Controller.ExamController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Asus
  */
 public class SelectExamServlet extends HttpServlet {
+
+    @PersistenceUnit(unitName = "QuizMeHard-minimizePU")
+    EntityManagerFactory emf;
+
+    @Resource
+    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,6 +43,10 @@ public class SelectExamServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        ExamController ec = new ExamController(emf, utx);
+        List<Exam> ary = ec.findAllExams();
+        session.setAttribute("exams", ary);
         getServletContext().getRequestDispatcher("/SelectExam.jsp").forward(request, response);
     }
 
