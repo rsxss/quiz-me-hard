@@ -19,6 +19,75 @@
     <link rel="stylesheet" href="addon/hint/show-hint.css">
     <script src="addon/hint/show-hint.js"></script>
     <script src="addon/hint/css-hint.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script> 
+    <script src="http://www.skulpt.org/js/skulpt.min.js" type="text/javascript"></script> 
+    <script src="http://www.skulpt.org/js/skulpt-stdlib.js" type="text/javascript"></script>
+    <script>
+        function insertTab(o, e)
+        {
+            var kC = e.keyCode ? e.keyCode : e.charCode ? e.charCode : e.which;
+            if (kC == 9 && !e.shiftKey && !e.ctrlKey && !e.altKey)
+            {
+                var oS = o.scrollTop;
+                if (o.setSelectionRange)
+                {
+                    var sS = o.selectionStart;
+                    var sE = o.selectionEnd;
+                    o.value = o.value.substring(0, sS) + "\t" + o.value.substr(sE);
+                    o.setSelectionRange(sS + 1, sS + 1);
+                    o.focus();
+                } else if (o.createTextRange)
+                {
+                    document.selection.createRange().text = "\t";
+                    e.returnValue = false;
+                }
+                o.scrollTop = oS;
+                if (e.preventDefault)
+                {
+                    e.preventDefault();
+                }
+                return false;
+            }
+            return true;
+        }
+    </script>
+    <script type="text/javascript">
+        // output functions are configurable.  This one just appends some text
+        // to a pre element.
+        function outf(text) {
+            var mypre = document.getElementById("output");
+            mypre.innerHTML = mypre.innerHTML + text;
+        }
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+                throw "File not found: '" + x + "'";
+            return Sk.builtinFiles["files"][x];
+        }
+
+        // Here's everything you need to run a python program in skulpt
+        // grab the code from your textarea
+        // get a reference to your pre element for output
+        // configure the output function
+        // call Sk.importMainWithBody()
+        function runit() {
+            var prog = document.getElementById("yourcode").value;
+            var mypre = document.getElementById("output");
+            mypre.innerHTML = '';
+            Sk.pre = "output";
+            Sk.configure({output: outf, read: builtinRead});
+            (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
+            var myPromise = Sk.misceval.asyncToPromise(function () {
+                return Sk.importMainWithBody("<stdin>", false, prog, true);
+            });
+            myPromise.then(function (mod) {
+                console.log('success');
+            },
+                    function (err) {
+                        console.log(err.toString());
+                    });
+        }
+    </script> 
     <style>
         body,h1 {font-family: "Raleway", sans-serif; }
         body, html {height: 100%;background-color: #eee }
@@ -69,21 +138,13 @@
             <div style="margin-left:25%">
                 <div class="w3-container" >
                     <p></p>
-                    <textarea id="codeeditor" ></textarea>
-                    <center><button  class="w3-button  w3-teal" style="margin-top: 10px">&blacktriangleright; Run</button></center>
+                    <textarea id="yourcode" style="width: 100%;height: 200px;resize: none;font-family: 'consolas'" onkeydown="insertTab(this, event);">print(5)</textarea>
+                    <center><button  class="w3-button  w3-teal" style="margin-top: 10px" onclick="runit()">&blacktriangleright; Run</button></center>
                     Output:
-                    <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
+                    <textarea readonly="" style="width: 100%;height: 150px;resize: none;font-family: 'consolas'"  id="output"></textarea>
+                    <div id="mycanvas"></div> 
                     <center><button  class="w3-button  w3-yellow" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                 </div>
-                <script>
-                    var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
-                        mode: "python",
-                        lineNumbers: true,
-                        autofocus: true,
-                        extraKeys: {"Ctrl-Space": "autocomplete"}
-                    });
-                    editor.setSize("100%", 250)
-                </script>
                 <script>
                     function checkSubmit() {
                         if (confirm("Are you sure you want to submit?")) {
@@ -112,21 +173,13 @@
             <div style="margin-left:25%">
                 <div class="w3-container" >
                     <p></p>
-                    <textarea id="codeeditor" ></textarea>
-                    <center><button  class="w3-button  w3-teal" style="margin-top: 10px">&blacktriangleright; Run</button></center>
+                    <textarea id="yourcode" style="width: 100%;height: 200px;resize: none ;font-family: 'consolas'" onkeydown="insertTab(this, event);">print(5)</textarea>
+                    <center><button  class="w3-button  w3-teal" style="margin-top: 10px" onclick="runit()">&blacktriangleright; Run</button></center>
                     Output:
-                    <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
+                    <textarea readonly="" style="width: 100%;height: 150px;resize: none;font-family: 'consolas' "  id="output"></textarea>
+                    <div id="mycanvas"></div> 
                     <center><button  class="w3-button  w3-yellow" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                 </div>
-                <script>
-                    var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
-                        mode: "python",
-                        lineNumbers: true,
-                        autofocus: true,
-                        extraKeys: {"Ctrl-Space": "autocomplete"}
-                    });
-                    editor.setSize("100%", 250)
-                </script>
                 <script>
                     function checkSubmit() {
                         if (confirm("Are you sure you want to submit?")) {
