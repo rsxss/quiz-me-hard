@@ -30,6 +30,7 @@
         }
     </style>
     <body>
+        <%--
         <c:if test="${user.equals('admin')}">
             <div class="w3-container w3-teal">
                 <h1>Quiz Me Hard</h1>
@@ -172,6 +173,39 @@
                     </tr>
                 </table>
             </div>
-        </c:if>
+        </c:if>--%>
+            <jsp:include page="header.jsp">
+                <jsp:param name="className" value="${classroom.classroomName}"/>
+            </jsp:include>
+            <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:10%">
+                <h3 class="w3-bar-item">Menu</h3>
+                <a href="ClassInfo?className=${classroom.classroomName}" class="w3-bar-item w3-button">Class Info</a>
+                <a href="SelectExam?className=${classroom.classroomName}" class="w3-bar-item w3-button w3-grey">Exam</a>
+                <div class=" w3-display-bottomleft" style="margin: 10px;margin-bottom: 50px"><a href="SelectClass">Back to Classes</a></div>
+            </div>
+            <div class="w3-container" style="margin-left:10%">
+                <h1>Exam</h1>
+                <table class="w3-table w3-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Score (100)</th>
+                        <th></th>
+                    </tr>
+                    <c:forEach items="${classroom.classroomExamCollection}" var="classroomExam" varStatus="vs">
+                        <tr>
+                            <td>${vs.count}</td>
+                            <td>${classroomExam.name}</td>
+                            <td></td>
+                            <td>
+                                <a href="Exam?className=${classroom.classroomName}&examId=${classroomExam.id}" 
+                                   class="w3-button w3-teal">
+                                    Start
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
     </body>
 </html>

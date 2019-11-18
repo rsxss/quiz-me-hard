@@ -6,12 +6,21 @@ package Servlet;
  * and open the template in the editor.
  */
 
+import static Servlet.ClassInfoServlet.getClassroom;
+import config.App;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.entities.Classroom;
+import model.entities.ClassroomExam;
 
 /**
  *
@@ -45,7 +54,23 @@ public class SelectExamServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String classroomName = request.getParameter("className").trim();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
+        if (!(Objects.isNull(classroomName)||classroomName.equals(""))){
+            Classroom classroom = getClassroom(emf, classroomName);
+            ArrayList<ClassroomExam> classroomExam = new ArrayList<>(classroom.getClassroomExamCollection());
+            if (!(Objects.isNull(classroom))){
+                request.setAttribute("classroom", classroom);
+                getServletContext().getRequestDispatcher("/SelectExam.jsp").forward(request,response);
+                return;
+            }
+        } 
+        request.setAttribute("message", "Classroom doesn't exists.");
+        request.setAttribute("messageLevel", "error");
+        List<Classroom> classrooms = SelectClassServlet.getClassrooms(emf);
+        request.setAttribute("classrooms", classrooms);
+        getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
+        emf.close();
     }
 
     /**

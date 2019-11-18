@@ -38,13 +38,11 @@ public class SelectClassServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
-        ClassroomJpaController cjc = new ClassroomJpaController(emf);
-        List<Classroom> classrooms = cjc.findClassroomEntities();
-        getServletContext().log(classrooms.toString());
-        emf.close();
-        request.setAttribute("classrooms", classrooms);
-        getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
+            List<Classroom> classrooms = getClassrooms(emf);
+            request.setAttribute("classrooms", classrooms);
+            getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
+            emf.close();
     }
 
     /**
@@ -59,14 +57,16 @@ public class SelectClassServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
-        ClassroomJpaController cjc = new ClassroomJpaController(emf);
-        List<Classroom> classrooms = cjc.findClassroomEntities();
-        getServletContext().log(classrooms.toString());
-        emf.close();
+        List<Classroom> classrooms = getClassrooms(emf);
         request.setAttribute("classrooms", classrooms);
         getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
+        emf.close();
     }
-
+    
+    public static List<Classroom> getClassrooms(EntityManagerFactory emf){
+        ClassroomJpaController cjc = new ClassroomJpaController(emf);
+        return cjc.findClassroomEntities();
+    }
     /**
      * Returns a short description of the servlet.
      *

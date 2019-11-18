@@ -130,7 +130,11 @@
                         <h2 class="w3-wide">Classroom</h2>
                         <ul class="w3-ul w3-border">
                             <c:forEach items="${requestScope.classrooms}" var="classroom">
-                                <li class="w3-hover-white"><a href="ClassInfo">${classroom.classroomName}</a></li>
+                                <li class="w3-hover-white">
+                                    <a href="ClassInfo?className=${classroom.classroomName}">
+                                        ${classroom.classroomName}
+                                    </a>
+                                </li>
                             </c:forEach>
                         </ul>
                         <br>

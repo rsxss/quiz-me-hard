@@ -30,11 +30,9 @@ import model.entities.ClassroomExamStudentScore;
  */
 public class ClassroomExamJpaController implements Serializable {
 
-    public ClassroomExamJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
+    public ClassroomExamJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private UserTransaction utx = null;
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -50,7 +48,7 @@ public class ClassroomExamJpaController implements Serializable {
         }
         EntityManager em = null;
         try {
-            utx.begin();
+            em.getTransaction().begin();
             em = getEntityManager();
             Classroom classroomId = classroomExam.getClassroomId();
             if (classroomId != null) {
@@ -92,10 +90,10 @@ public class ClassroomExamJpaController implements Serializable {
                     oldExamIdOfClassroomExamStudentScoreCollectionClassroomExamStudentScore = em.merge(oldExamIdOfClassroomExamStudentScoreCollectionClassroomExamStudentScore);
                 }
             }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -110,7 +108,7 @@ public class ClassroomExamJpaController implements Serializable {
     public void edit(ClassroomExam classroomExam) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
+            em.getTransaction().begin();
             em = getEntityManager();
             ClassroomExam persistentClassroomExam = em.find(ClassroomExam.class, classroomExam.getId());
             Classroom classroomIdOld = persistentClassroomExam.getClassroomId();
@@ -188,10 +186,10 @@ public class ClassroomExamJpaController implements Serializable {
                     }
                 }
             }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -213,7 +211,7 @@ public class ClassroomExamJpaController implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
+            em.getTransaction().begin();
             em = getEntityManager();
             ClassroomExam classroomExam;
             try {
@@ -246,10 +244,10 @@ public class ClassroomExamJpaController implements Serializable {
                 classroomId = em.merge(classroomId);
             }
             em.remove(classroomExam);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

@@ -62,26 +62,23 @@ public class LoginServlet extends HttpServlet {
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
         
-        UserJpaController ujc = new UserJpaController(emf);
-        User user = ujc.findByUsername(username);
 //        getServletContext().log(user.toString());
 //        getServletContext().log(user.getStudent().toString());
 //        getServletContext().log(user.getPassword());
 //        getServletContext().log(Authentication.getEncryptedPassword(password));
 //        getServletContext().log(Authentication.authenticate(user, password) ? "true" : "false");
-        try {
-            if(!Objects.isNull(user)&&Authentication.authenticate(user, password)){
-               HttpSession session = request.getSession();
-               session.setAttribute("user", user);
-               getServletContext().getRequestDispatcher("/SelectClass").include(request, response);
-               return;
-            }
-            request.setAttribute("message", "Invalid Credentails");
-            request.setAttribute("messageLevel", "error");
-            getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-        } finally {
-            emf.close();
+        UserJpaController ujc = new UserJpaController(emf);
+        User user = ujc.findByUsername(username);
+        if(!Objects.isNull(user)&&Authentication.authenticate(user, password)){
+           HttpSession session = request.getSession();
+           session.setAttribute("user", user);
+           getServletContext().getRequestDispatcher("/SelectClass").include(request, response);
+           return;
         }
+        request.setAttribute("message", "Invalid Credentails");
+        request.setAttribute("messageLevel", "error");
+        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+        emf.close();
     }
 
     /**

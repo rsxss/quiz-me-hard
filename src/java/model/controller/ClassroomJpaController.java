@@ -16,6 +16,8 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 import model.controller.exceptions.IllegalOrphanException;
 import model.controller.exceptions.NonexistentEntityException;
@@ -261,6 +263,20 @@ public class ClassroomJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public Classroom findClassroomByName(String className){
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Classroom> query = em.createNamedQuery("Classroom.findByClassroomName", Classroom.class);
+            query.setParameter("classroomName", className);
+            return query.getSingleResult();
+        } catch (NoResultException nre){
+            // Swallowing anti-pattern.
+        } 
+        finally {
+            em.close();
+        } return null;
     }
 
     public int getClassroomCount() {

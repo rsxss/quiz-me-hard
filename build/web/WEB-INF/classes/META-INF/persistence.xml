@@ -4,7 +4,7 @@
     <jta-data-source>java:app/qmh-dbms_quiz_me_hard</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <!--            <property name="javax.persistence.schema-generation.database.action" value="create"/>-->
+      <!--<property name="javax.persistence.schema-generation.database.action" value="create"/>-->
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://13.76.155.2:3306/quiz_me_hard"/>
       <property name="javax.persistence.jdbc.user" value="qmh-dbms"/>
