@@ -17,15 +17,20 @@ import java.util.logging.Logger;
  * @author NATWORPONGLOYSWAI
  */
 public class Authentication {
-    public static boolean authenticate(User user, String password) {
+    
+    private static String getEncryptedPassword(String password){
         try {
             final MessageDigest messageDigest = MessageDigest.getInstance(App.PASSWORD_HASHING_ALGORITHM);
             messageDigest.update(password.getBytes());
             String encryptedPassword = new String(messageDigest.digest());
-            return encryptedPassword.equals(user.getPassword());
+            return encryptedPassword;
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return "";
+    }
+    
+    public static boolean authenticate(User user, String password) {
+        return getEncryptedPassword(password).equals(user.getPassword());
     }
 }

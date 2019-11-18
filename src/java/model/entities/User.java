@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,7 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
     , @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName")
     , @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName")
-    , @NamedQuery(name = "User.findByIsAdmin", query = "SELECT u FROM User u WHERE u.isAdmin = :isAdmin")})
+    , @NamedQuery(name = "User.findByIsAdmin", query = "SELECT u FROM User u WHERE u.isAdmin = :isAdmin")
+    , @NamedQuery(name = "User.findStudent", query = "SELECT s FROM User u JOIN u.student s WHERE u.id = :id")})
 public class User implements Serializable {
 
 private static final long serialVersionUID = 1L;
@@ -71,8 +73,8 @@ private static final long serialVersionUID = 1L;
     private Boolean isAdmin;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<ClassroomMember> classroomMemberCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Student> studentCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Student student;
 
     public User() {
     }
@@ -153,12 +155,12 @@ private static final long serialVersionUID = 1L;
     }
 
     @XmlTransient
-    public Collection<Student> getStudentCollection() {
-        return studentCollection;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentCollection(Collection<Student> studentCollection) {
-        this.studentCollection = studentCollection;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

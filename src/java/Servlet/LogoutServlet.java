@@ -33,6 +33,7 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         session.invalidate();
         request.setAttribute("message", "Logout success");
+        request.setAttribute("messageLevel", "success");
         getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
     }
 

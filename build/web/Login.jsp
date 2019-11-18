@@ -38,7 +38,7 @@
                                 <br><label><input type="submit" value="Login"  class="w3-btn w3-teal w3-border w3-border-white w3-round-xlarge "></label>
                                 <br><a href="Login?role=admin">Admin</a> <a href="Login?role=teacher">Teacher</a> <a href="Login?role=student">Student</a>
                         </form>
-                        <div class="w3-container w3-green ">
+                        <div class="w3-container ${messageLevel=="success" ? "w3-green":"w3-red"} ">
                             ${message}
                         </div>
                     </div>

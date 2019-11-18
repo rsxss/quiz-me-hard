@@ -33,7 +33,7 @@
     </head>
     <body>
         <c:out value="Welcome: ${sessionScope.user.firstName} ${sessionScope.user.lastName}"/>
-        <c:if test="${user.equals('admin')}">
+        <%--<c:if test="${user.equals('admin')}">
             <div class="bgimg w3-display-container w3-text-white ">
                 <div class="w3-container w3-teal">
                     <h1>Quiz Me Hard</h1>
@@ -97,12 +97,12 @@
                 </div>
             </div>
         </c:if>
-        <c:if test="${user.equals('student')}">
+        <c:if test="${user.student}">
             <div class="bgimg w3-display-container w3-text-white">
                 <div class="w3-container w3-teal">
                     <h1>Quiz Me Hard</h1>
                     <div class="w3-display-topright w3-padding-large ">
-                        <span>Student:${user}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+                        <span><!--Student:-->${user.firstName} ${user.lastName}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
                     </div>
                 </div>
                 <div>
@@ -117,6 +117,25 @@
                     </div>
                 </div>
             </div>
-        </c:if>
+        </c:if> --%>
+        <div class="bgimg w3-display-container w3-text-white">
+                <div class="w3-container w3-teal">
+                    <h1>Quiz Me Hard</h1>
+                    <div class="w3-display-topright w3-padding-large ">
+                        <span>${user.firstName} ${user.lastName}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="box w3-display-middle w3-padding-large ">
+                        <h2 class="w3-wide">Classroom</h2>
+                        <ul class="w3-ul w3-border">
+                            <c:forEach items="${requestScope.classrooms}" var="classroom">
+                                <li class="w3-hover-white"><a href="ClassInfo">${classroom.classroomName}</a></li>
+                            </c:forEach>
+                        </ul>
+                        <br>
+                    </div>
+                </div>
+            </div>
     </body>
 </html>

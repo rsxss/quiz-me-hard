@@ -6,12 +6,19 @@ package Servlet;
  * and open the template in the editor.
  */
 
+import config.App;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.controller.ClassroomJpaController;
+import model.entities.Classroom;
 
 /**
  *
@@ -31,6 +38,12 @@ public class SelectClassServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
+        ClassroomJpaController cjc = new ClassroomJpaController(emf);
+        List<Classroom> classrooms = cjc.findClassroomEntities();
+        getServletContext().log(classrooms.toString());
+        emf.close();
+        request.setAttribute("classrooms", classrooms);
         getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
     }
 
@@ -45,7 +58,13 @@ public class SelectClassServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
- 
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
+        ClassroomJpaController cjc = new ClassroomJpaController(emf);
+        List<Classroom> classrooms = cjc.findClassroomEntities();
+        getServletContext().log(classrooms.toString());
+        emf.close();
+        request.setAttribute("classrooms", classrooms);
+        getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
     }
 
     /**

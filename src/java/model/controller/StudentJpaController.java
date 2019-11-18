@@ -6,23 +6,25 @@
 package model.controller;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import model.entities.User;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
+import model.controller.exceptions.IllegalOrphanException;
 import model.controller.exceptions.NonexistentEntityException;
 import model.controller.exceptions.PreexistingEntityException;
 import model.controller.exceptions.RollbackFailureException;
 import model.entities.Student;
-import model.entities.User;
 
 /**
  *
- * @author NATWORPONGLOYSWAI
+ * @author Administrater
  */
 public class StudentJpaController implements Serializable {
 
@@ -37,7 +39,21 @@ public class StudentJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Student student) throws PreexistingEntityException, RollbackFailureException, Exception {
+    public void create(Student student) throws IllegalOrphanException, PreexistingEntityException, RollbackFailureException, Exception {
+        List<String> illegalOrphanMessages = null;
+        User userIdOrphanCheck = student.getUserId();
+        if (userIdOrphanCheck != null) {
+            Student oldStudentOfUserId = userIdOrphanCheck.getStudent();
+            if (oldStudentOfUserId != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("The User " + userIdOrphanCheck + " already has an item of type Student whose userId column cannot be null. Please make another selection for the userId field.");
+            }
+        }
+        if (illegalOrphanMessages != null) {
+            throw new IllegalOrphanException(illegalOrphanMessages);
+        }
         EntityManager em = null;
         try {
             utx.begin();
@@ -49,7 +65,7 @@ public class StudentJpaController implements Serializable {
             }
             em.persist(student);
             if (userId != null) {
-                userId.getStudentCollection().add(student);
+                userId.setStudent(student);
                 userId = em.merge(userId);
             }
             utx.commit();
@@ -70,7 +86,7 @@ public class StudentJpaController implements Serializable {
         }
     }
 
-    public void edit(Student student) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Student student) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -78,17 +94,30 @@ public class StudentJpaController implements Serializable {
             Student persistentStudent = em.find(Student.class, student.getId());
             User userIdOld = persistentStudent.getUserId();
             User userIdNew = student.getUserId();
+            List<String> illegalOrphanMessages = null;
+            if (userIdNew != null && !userIdNew.equals(userIdOld)) {
+                Student oldStudentOfUserId = userIdNew.getStudent();
+                if (oldStudentOfUserId != null) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("The User " + userIdNew + " already has an item of type Student whose userId column cannot be null. Please make another selection for the userId field.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (userIdNew != null) {
                 userIdNew = em.getReference(userIdNew.getClass(), userIdNew.getId());
                 student.setUserId(userIdNew);
             }
             student = em.merge(student);
             if (userIdOld != null && !userIdOld.equals(userIdNew)) {
-                userIdOld.getStudentCollection().remove(student);
+                userIdOld.setStudent(null);
                 userIdOld = em.merge(userIdOld);
             }
             if (userIdNew != null && !userIdNew.equals(userIdOld)) {
-                userIdNew.getStudentCollection().add(student);
+                userIdNew.setStudent(student);
                 userIdNew = em.merge(userIdNew);
             }
             utx.commit();
@@ -127,7 +156,7 @@ public class StudentJpaController implements Serializable {
             }
             User userId = student.getUserId();
             if (userId != null) {
-                userId.getStudentCollection().remove(student);
+                userId.setStudent(null);
                 userId = em.merge(userId);
             }
             em.remove(student);

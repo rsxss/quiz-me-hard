@@ -64,14 +64,21 @@ public class LoginServlet extends HttpServlet {
         
         UserJpaController ujc = new UserJpaController(emf);
         User user = ujc.findByUsername(username);
-        
+//        getServletContext().log(user.toString());
+//        getServletContext().log(user.getStudent().toString());
+//        getServletContext().log(user.getPassword());
+//        getServletContext().log(Authentication.getEncryptedPassword(password));
+//        getServletContext().log(Authentication.authenticate(user, password) ? "true" : "false");
         try {
             if(!Objects.isNull(user)&&Authentication.authenticate(user, password)){
                HttpSession session = request.getSession();
                session.setAttribute("user", user);
-               getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
+               getServletContext().getRequestDispatcher("/SelectClass").include(request, response);
                return;
-            } getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+            }
+            request.setAttribute("message", "Invalid Credentails");
+            request.setAttribute("messageLevel", "error");
+            getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
         } finally {
             emf.close();
         }
