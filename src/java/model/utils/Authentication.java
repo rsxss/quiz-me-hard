@@ -31,6 +31,6 @@ public class Authentication {
     }
     
     public static boolean authenticate(User user, String password) {
-        return getEncryptedPassword(password).equals(user.getPassword());
+        return password.equals(user.getPassword());
     }
 }
