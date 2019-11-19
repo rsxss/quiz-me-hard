@@ -67,7 +67,7 @@ public class LoginServlet extends HttpServlet {
 //        getServletContext().log(user.getPassword());
 //        getServletContext().log(Authentication.getEncryptedPassword(password));
 //        getServletContext().log(Authentication.authenticate(user, password) ? "true" : "false");
-        UserJpaController ujc = new UserJpaController(emf);
+        UserJpaController ujc = new UserJpaController();
         User user = ujc.findByUsername(username);
         if(!Objects.isNull(user)&&Authentication.authenticate(user, password)){
            HttpSession session = request.getSession();

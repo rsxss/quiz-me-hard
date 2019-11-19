@@ -15,9 +15,13 @@ import model.entities.ClassroomMember;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 import model.controller.exceptions.IllegalOrphanException;
@@ -29,16 +33,17 @@ import model.entities.User;
  *
  * @author Administrater
  */
+@Named
+@RequestScoped
 public class UserJpaController implements Serializable {
+    
+    @Resource
+    private UserTransaction utx;
+    @PersistenceContext(unitName="QuizMeHardPU")
+    private EntityManager em;
 
-     public UserJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    
-    private EntityManagerFactory emf = null;
-    
     public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+        return em;
     }
 
     public void create(User user) throws RollbackFailureException, Exception {
@@ -257,16 +262,9 @@ public class UserJpaController implements Serializable {
     
     public User findByUsername(String username){
         EntityManager em = getEntityManager();
-        try{
-            TypedQuery<User> query = em.createNamedQuery("User.findByUsername", User.class);
-            query.setParameter("username", username);
-            return query.getSingleResult();
-        } catch(NoResultException nre) {
-            // Swallowing anti-pattern
-        }
-        finally {
-            em.close();
-        } return null;
+        TypedQuery<User> query = em.createNamedQuery("User.findByUsername", User.class);
+        query.setParameter("username", username);
+        return query.getSingleResult();
     }
     
     public int getUserCount() {
