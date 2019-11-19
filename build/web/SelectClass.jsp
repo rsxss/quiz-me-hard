@@ -128,6 +128,9 @@
                 <div>
                     <div class="box w3-display-middle w3-padding-large ">
                         <h2 class="w3-wide">Classroom</h2>
+                        <c:if test="${sessionScope.user.isAdmin}">
+                            <a href="AddClass" class="w3-button  w3-black w3-display-topright w3-round-xlarge" style="margin: 10px">+ Add Class</a>
+                        </c:if>
                         <ul class="w3-ul w3-border">
                             <c:forEach items="${requestScope.classrooms}" var="classroom">
                                 <li class="w3-hover-white">

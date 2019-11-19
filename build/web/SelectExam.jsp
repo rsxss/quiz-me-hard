@@ -139,7 +139,7 @@
             <div class="w3-container" style="margin-left:10%">
                 <h1>Exam</h1>
                 <c:if test="${sessionScope.user.isAdmin}">
-                    <a href="AddExam" class="w3-button  w3-black  w3-round-xlarge" style="margin: 10px">+ Add Exam</a>
+                    <a href="AddExam?className=${classroom.classroomName}" class="w3-button  w3-black  w3-round-xlarge" style="margin: 10px">+ Add Exam</a>
                 </c:if>
                 <table class="w3-table w3-striped">
                     <tr>
