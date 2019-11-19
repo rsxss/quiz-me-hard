@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
 import model.controller.ClassroomJpaController;
 import model.entities.Classroom;
 
@@ -24,7 +25,7 @@ import model.entities.Classroom;
  *
  * @author Asus
  */
-public class SelectClassServlet extends HttpServlet {
+public class SelectClassServlet extends BaseServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,11 +39,9 @@ public class SelectClassServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
-            List<Classroom> classrooms = getClassrooms(emf);
+            List<Classroom> classrooms = getClassrooms(utx, emf);
             request.setAttribute("classrooms", classrooms);
             getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
-            emf.close();
     }
 
     /**
@@ -56,15 +55,13 @@ public class SelectClassServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
-        List<Classroom> classrooms = getClassrooms(emf);
-        request.setAttribute("classrooms", classrooms);
-        getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
-        emf.close();
+            List<Classroom> classrooms = getClassrooms(utx, emf);
+            request.setAttribute("classrooms", classrooms);
+            getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
     }
     
-    public static List<Classroom> getClassrooms(EntityManagerFactory emf){
-        ClassroomJpaController cjc = new ClassroomJpaController(emf);
+    public static List<Classroom> getClassrooms(UserTransaction utx, EntityManagerFactory emf){
+        ClassroomJpaController cjc = new ClassroomJpaController(utx, emf);
         return cjc.findClassroomEntities();
     }
     /**

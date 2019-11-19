@@ -26,8 +26,8 @@ import model.entities.User;
  *
  * @author Asus
  */
-public class LoginServlet extends HttpServlet {
-
+public class LoginServlet extends BaseServlet {
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -60,14 +60,14 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
         
 //        getServletContext().log(user.toString());
 //        getServletContext().log(user.getStudent().toString());
 //        getServletContext().log(user.getPassword());
 //        getServletContext().log(Authentication.getEncryptedPassword(password));
 //        getServletContext().log(Authentication.authenticate(user, password) ? "true" : "false");
-        UserJpaController ujc = new UserJpaController(emf);
+        
+        UserJpaController ujc = new UserJpaController(utx, emf);
         User user = ujc.findByUsername(username);
         if(!Objects.isNull(user)&&Authentication.authenticate(user, password)){
            HttpSession session = request.getSession();
@@ -78,7 +78,6 @@ public class LoginServlet extends HttpServlet {
         request.setAttribute("message", "Invalid Credentails");
         request.setAttribute("messageLevel", "error");
         getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-        emf.close();
     }
 
     /**

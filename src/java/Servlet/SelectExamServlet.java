@@ -26,7 +26,7 @@ import model.entities.ClassroomExam;
  *
  * @author Asus
  */
-public class SelectExamServlet extends HttpServlet {
+public class SelectExamServlet extends BaseServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,9 +55,8 @@ public class SelectExamServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String classroomName = request.getParameter("className").trim();
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
         if (!(Objects.isNull(classroomName)||classroomName.equals(""))){
-            Classroom classroom = getClassroom(emf, classroomName);
+            Classroom classroom = getClassroom(utx, emf, classroomName);
             ArrayList<ClassroomExam> classroomExam = new ArrayList<>(classroom.getClassroomExamCollection());
             if (!(Objects.isNull(classroom))){
                 request.setAttribute("classroom", classroom);
@@ -67,10 +66,9 @@ public class SelectExamServlet extends HttpServlet {
         } 
         request.setAttribute("message", "Classroom doesn't exists.");
         request.setAttribute("messageLevel", "error");
-        List<Classroom> classrooms = SelectClassServlet.getClassrooms(emf);
+        List<Classroom> classrooms = SelectClassServlet.getClassrooms(utx, emf);
         request.setAttribute("classrooms", classrooms);
         getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
-        emf.close();
     }
 
     /**

@@ -27,7 +27,7 @@ import model.entities.ClassroomExam;
  *
  * @author Asus
  */
-public class ExamServlet extends HttpServlet {
+public class ExamServlet extends BaseServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,8 +58,7 @@ public class ExamServlet extends HttpServlet {
         String classroomName = request.getParameter("className").trim();
         int examId = Integer.parseInt(request.getParameter("examId"));
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(App.PERSISTANCE_NAME);
-        ClassroomExamJpaController cejpc = new ClassroomExamJpaController(emf);
+        ClassroomExamJpaController cejpc = new ClassroomExamJpaController(utx, emf);
         ClassroomExam ce = cejpc.findClassroomExam(examId);
         if (!(Objects.isNull(classroomName)||classroomName.equals(""))){
             ClassroomExam classroomExam = ce;//getClassroomExam(emf, examId);
@@ -72,10 +71,9 @@ public class ExamServlet extends HttpServlet {
         } 
         request.setAttribute("message", "Classroom doesn't exists.");
         request.setAttribute("messageLevel", "error");
-        List<Classroom> classrooms = SelectClassServlet.getClassrooms(emf);
+        List<Classroom> classrooms = SelectClassServlet.getClassrooms(utx, emf);
         request.setAttribute("classrooms", classrooms);
         getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
-        emf.close();
     }
 
     /**

@@ -77,7 +77,9 @@ public final class Login_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                <br><label><input type=\"submit\" value=\"Login\"  class=\"w3-btn w3-teal w3-border w3-border-white w3-round-xlarge \"></label>\n");
       out.write("                                <br><a href=\"Login?role=admin\">Admin</a> <a href=\"Login?role=teacher\">Teacher</a> <a href=\"Login?role=student\">Student</a>\n");
       out.write("                        </form>\n");
-      out.write("                        <div class=\"w3-container w3-green \">\n");
+      out.write("                        <div class=\"w3-container ");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${messageLevel==\"success\" ? \"w3-green\":\"w3-red\"}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write(" \">\n");
       out.write("                            ");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${message}", java.lang.String.class, (PageContext)_jspx_page_context, null));
       out.write("\n");
