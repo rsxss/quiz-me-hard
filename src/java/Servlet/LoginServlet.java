@@ -54,9 +54,6 @@ public class LoginServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        String role = request.getParameter("role");
-//        session.setAttribute("user", role);
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
         
@@ -75,7 +72,7 @@ public class LoginServlet extends BaseServlet {
            getServletContext().getRequestDispatcher("/SelectClass").include(request, response);
            return;
         }
-        request.setAttribute("message", "Invalid Credentails");
+        request.setAttribute("message", "INVALID CREDENTIALS");
         request.setAttribute("messageLevel", "error");
         getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
     }

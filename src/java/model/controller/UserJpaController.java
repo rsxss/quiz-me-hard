@@ -53,7 +53,7 @@ public class UserJpaController implements Serializable {
         }
         EntityManager em = null;
         try {
-            em.getTransaction().begin();
+            utx.begin();
             em = getEntityManager();
             Student student = user.getStudent();
             if (student != null) {
@@ -85,10 +85,10 @@ public class UserJpaController implements Serializable {
                     oldUserIdOfClassroomMemberCollectionClassroomMember = em.merge(oldUserIdOfClassroomMemberCollectionClassroomMember);
                 }
             }
-            em.getTransaction().commit();
+            utx.commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -103,7 +103,7 @@ public class UserJpaController implements Serializable {
     public void edit(User user) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em.getTransaction().begin();
+            utx.begin();
             em = getEntityManager();
             User persistentUser = em.find(User.class, user.getId());
             Student studentOld = persistentUser.getStudent();
@@ -160,10 +160,10 @@ public class UserJpaController implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
+            utx.commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -185,7 +185,7 @@ public class UserJpaController implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em.getTransaction().begin();
+            utx.begin();
             em = getEntityManager();
             User user;
             try {
@@ -213,10 +213,10 @@ public class UserJpaController implements Serializable {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(user);
-            em.getTransaction().commit();
+            utx.commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
