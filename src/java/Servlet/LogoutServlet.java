@@ -34,14 +34,14 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         String message = null;
         String messageLevel = null;
-        if(Objects.isNull(session.getAttribute("user"))){
+        if(session==null||Objects.isNull(session.getAttribute("user"))){
             message = "NOT LOGGED IN";
             messageLevel = "error";
         } else {
+            session.invalidate();
             message = "LOGOUT SUCCESS";
             messageLevel = "success";
         }
-        session.invalidate();
         request.setAttribute("message", message);
             request.setAttribute("messageLevel", messageLevel);
         getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);

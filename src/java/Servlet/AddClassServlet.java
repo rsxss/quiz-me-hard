@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Asus
  */
-public class AddClassServlet extends HttpServlet {
+public class AddClassServlet extends BaseServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,7 +57,9 @@ public class AddClassServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String classroomName = request.getParameter("className");
+        String classroomDescription = request.getParameter("classDescription");
+        
     }
 
     /**

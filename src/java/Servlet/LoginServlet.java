@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.utils.Authentication;
 import model.controller.UserJpaController;
+import model.entities.Classroom;
 import model.entities.User;
 
 /**
@@ -57,6 +58,9 @@ public class LoginServlet extends BaseServlet {
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
         
+        Classroom clsr = new Classroom();
+        
+        getServletContext().log(clsr.toString());
         
 //        getServletContext().log(user.toString());
 //        getServletContext().log(user.getStudent().toString());

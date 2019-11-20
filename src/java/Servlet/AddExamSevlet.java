@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.entities.ClassroomExam;
 
 /**
  *
@@ -61,7 +62,12 @@ public class AddExamSevlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String examName = request.getParameter("examName");
+        String examDescription = request.getParameter("examDescription");
+        String examTestCase = request.getParameter("examTestCase");
+        
+        ClassroomExam ce = new ClassroomExam(1, examName, (short)1, examTestCase);
+        
     }
 
     /**

@@ -42,9 +42,9 @@
             <div class="box w3-display-middle w3-padding-large" >
                 <h5>Add Class</h5>
                 <form action="AddClass" method="post">
-                    <p>Class name : <input type="text" name="classname" class="w3-round-large"></p>
+                    <p>Class name : <input type="text" name="className" class="w3-round-large"></p>
                     <p>Class details :</p>
-                    <p><textarea rows="4" cols="50" name="comment" form="usrform" placeholder="Enter here..." class="w3-round-large"></textarea>
+                    <p><textarea rows="4" cols="50" name="classDescription" placeholder="Enter here..." class="w3-round-large"></textarea>
                     <p>Teacher name : </p>
                     <p></p>
                     <input type="radio" name="teacher" value="Crysta Pella"> Crysta Pella<br>

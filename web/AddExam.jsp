@@ -44,11 +44,11 @@
             <div class="box w3-display-middle w3-padding-large" >
                 <h5>Add Exam</h5>
                 <form action=""  method="post">
-                    <p>Title : <input type="text" name="classname" class="w3-round-large"></p>
+                    <p>Title : <input type="text" name="examName" class="w3-round-large"></p>
                     <p>Description :</p>
-                    <p><textarea rows="5" cols="70" name="comment" form="usrform" placeholder="Enter here..." class="w3-round-large"></textarea>
+                    <p><textarea rows="5" cols="70" name="examDescription" placeholder="Enter here..." class="w3-round-large"></textarea>
                     <p>Test Case :</p>
-                    <p><textarea rows="5" cols="70" name="comment" form="usrform" placeholder="Enter here..." class="w3-round-large"></textarea>
+                    <p><textarea rows="5" cols="70" name="examTestCase" placeholder="Enter here..." class="w3-round-large"></textarea>
                     <div class="w3-right  w3-padding-large ">
                         <a href="SelectExam?className=${className}" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge">
                     </div>
