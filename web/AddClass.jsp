@@ -49,7 +49,7 @@
                     <p></p>
                     <c:forEach items="${requestScope.users}" var="user" varStatus="vs">
                         <c:set var="userName" value="${user.firstName} ${user.lastName}"/>
-                        <input type="radio" name="teacher" value="${user.id}"/><c:out value="${pageScope.userName}"/>
+                        <input type="radio" name="teacher" value="${user.id}"/><c:out value="${pageScope.userName}"/><br/>
                     </c:forEach>
                     <div class="w3-display-bottomright w3-padding-large ">
                         <a href="SelectClass" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge">

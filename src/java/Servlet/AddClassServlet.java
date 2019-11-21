@@ -61,7 +61,10 @@ public class AddClassServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            getServletContext().getRequestDispatcher("/AddClass").forward(request, response);
+            UserJpaController ujc = new UserJpaController(utx, emf);
+            List<User> users = ujc.findByNonStudent();
+            request.setAttribute("users", users);
+            getServletContext().getRequestDispatcher("/AddClass.jsp").forward(request, response);
     }
 
     /**
@@ -97,8 +100,10 @@ public class AddClassServlet extends BaseServlet {
         classroom.setClassroomMemberCollection(classroomMembers);
         try {
             cjc.create(classroom);
+            response.sendRedirect("SelectClass");
         } catch (Exception ex) {
-            Logger.getLogger(AddClassServlet.class.getName()).log(Level.SEVERE, null, ex);
+            getServletContext().log("Create classroom failed.");
+            getServletContext().log(ex.toString());
         } 
         response.sendRedirect(request.getHeader("Referer"));
         
