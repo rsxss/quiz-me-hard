@@ -8,6 +8,7 @@ package Servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,9 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.controller.ClassroomJpaController;
 import model.controller.ClassroomMemberJpaController;
+import model.controller.ClassroomTeacherJpaController;
 import model.controller.UserJpaController;
 import model.entities.Classroom;
 import model.entities.ClassroomMember;
+import model.entities.ClassroomTeacher;
 import model.entities.User;
 
 /**
@@ -81,36 +84,59 @@ public class AddClassServlet extends BaseServlet {
         String classroomName = request.getParameter("className");
         String classroomDescription = request.getParameter("classDescription");
         Integer teacherId = Integer.valueOf(request.getParameter("teacher"));
-        
-        getServletContext().log("teacherId: "+teacherId);
 
-        UserJpaController ujc = new UserJpaController(utx, emf);
-        ClassroomMemberJpaController cmjc = new ClassroomMemberJpaController(utx, emf);
         ClassroomJpaController cjc = new ClassroomJpaController(utx, emf);
 
         Classroom classroom = new Classroom();
         classroom.setClassroomName(classroomName);
         classroom.setClassroomDescription(classroomDescription);
 
-//        classroom.setClassroomMemberCollection(classroomMembers);
         try {
             cjc.create(classroom);
-            Collection<ClassroomMember> classroomMembers = new ArrayList<>();
-            ClassroomMember firstClassroomMember = new ClassroomMember();
-            firstClassroomMember.setClassroomId(cjc.findClassroomByName(classroom.getClassroomName()));
-            firstClassroomMember.setUserId(ujc.findUser(teacherId));
-            classroomMembers.add(firstClassroomMember);
+            Collection<ClassroomMember> classroomMembers = preparedFirstClassroomMember(classroom, teacherId);
             classroom.setClassroomMemberCollection(classroomMembers);
             cjc.edit(classroom);
             response.sendRedirect("SelectClass");
         } catch (Exception ex) {
             getServletContext().log("Create classroom failed.");
             getServletContext().log(ex.toString());
+            getServletContext().log(Arrays.toString(ex.getStackTrace()));
         } 
         response.sendRedirect(request.getHeader("Referer"));
         
     }
-
+    
+    private Collection<ClassroomMember> preparedFirstClassroomMember(Classroom classroom, Integer teacherId) throws Exception{
+        UserJpaController ujc = new UserJpaController(utx, emf);
+        ClassroomMemberJpaController cmjc = new ClassroomMemberJpaController(utx, emf);
+        ClassroomJpaController cjc = new ClassroomJpaController(utx, emf);
+        
+        Classroom managedClassroom = cjc.findClassroomByName(classroom.getClassroomName());
+        User managedUser = ujc.findUser(teacherId);
+        
+        Collection<ClassroomMember> classroomMembers = new ArrayList<>();
+        
+        ClassroomMember firstClassroomMember = new ClassroomMember();
+        firstClassroomMember.setClassroomId(managedClassroom);
+        firstClassroomMember.setUserId(managedUser);
+        cmjc.create(firstClassroomMember);
+        Collection<ClassroomTeacher> classroomTeachers = preparedClassroomTeacher(firstClassroomMember);
+        firstClassroomMember.setClassroomTeacherCollection(classroomTeachers);
+        cmjc.edit(firstClassroomMember);
+        classroomMembers.add(firstClassroomMember); return classroomMembers;
+        
+    }
+    
+    private Collection<ClassroomTeacher> preparedClassroomTeacher(ClassroomMember classroomMember) throws Exception{
+        ClassroomTeacherJpaController ctjc = new ClassroomTeacherJpaController(utx, emf);
+        Collection<ClassroomTeacher> classroomTeachers = new ArrayList<>();
+        ClassroomTeacher classroomTeacher = new ClassroomTeacher();
+        classroomTeacher.setClassroomMemberId(classroomMember);
+        ctjc.create(classroomTeacher);
+        classroomTeacher = ctjc.findClassroomTeacherByClassroomMember(classroomMember);
+        classroomTeachers.add(classroomTeacher);
+        return classroomTeachers;
+    }
     /**
      * Returns a short description of the servlet.
      *

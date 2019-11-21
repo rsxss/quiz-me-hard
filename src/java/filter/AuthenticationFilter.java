@@ -112,9 +112,9 @@ public class AuthenticationFilter implements Filter {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpSession session = httpRequest.getSession(false);
             String path = httpRequest.getServletPath();
-            request.getServletContext().log("Visited: "+path);
-            request.getServletContext().log("isExcluded: "+isExcluded(path));
-            request.getServletContext().log("isAuthenticated: "+isAuthenticate(session));
+//            request.getServletContext().log("Visited: "+path);
+//            request.getServletContext().log("isExcluded: "+isExcluded(path));
+//            request.getServletContext().log("isAuthenticated: "+isAuthenticate(session));
             if (isExcluded(path)||isAuthenticate(session)){
                 chain.doFilter(request, response);
                 return;

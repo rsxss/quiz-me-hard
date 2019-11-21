@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -174,7 +175,21 @@ public class ClassroomTeacherJpaController implements Serializable {
             em.close();
         }
     }
-
+    
+    public ClassroomTeacher findClassroomTeacherByClassroomMember(ClassroomMember classroomMember){
+        EntityManager em = getEntityManager();
+        try{
+            TypedQuery<ClassroomTeacher> query = em.createNamedQuery(
+                    "ClassroomTeacher.findClassroomTeacherByClassroomMember",
+                    ClassroomTeacher.class
+            );
+            query.setParameter("classroomMember", classroomMember);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+    
     public int getClassroomTeacherCount() {
         EntityManager em = getEntityManager();
         try {

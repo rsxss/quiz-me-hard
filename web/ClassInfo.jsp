@@ -133,9 +133,11 @@
                 <h4>Description</h4>
                 ${classroom.classroomDescription}
                 <h4>Teacher</h4>
-                x
+                
                 <h4>Member</h4>
-                <p>x</p>
+                <c:forEach items="${classroom.classroomMemberCollection}" var="classroomMember" varStatus="vs">
+                    ${classroomMember.userId.firstName} ${classroomMember.userId.lastName}
+                </c:forEach>
             </div>
     </body>
 </html>
