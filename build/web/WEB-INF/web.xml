@@ -47,6 +47,10 @@
         <servlet-name>AddExamSevlet</servlet-name>
         <servlet-class>Servlet.AddExamSevlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteExamServlet</servlet-name>
+        <servlet-class>Servlet.DeleteExamServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClassInfoServlet</servlet-name>
         <url-pattern>/ClassInfo</url-pattern>
@@ -82,6 +86,10 @@
     <servlet-mapping>
         <servlet-name>AddExamSevlet</servlet-name>
         <url-pattern>/AddExam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteExamServlet</servlet-name>
+        <url-pattern>/DeleteExam</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

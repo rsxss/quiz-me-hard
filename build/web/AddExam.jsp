@@ -49,6 +49,7 @@
                     <p><textarea rows="5" cols="70" name="examDescription" placeholder="Enter here..." class="w3-round-large"></textarea>
                     <p>Test Case :</p>
                     <p><textarea rows="5" cols="70" name="examTestCase" placeholder="Enter here..." class="w3-round-large"></textarea>
+                    <input type="hidden" name="className" value="${className}"/>
                     <div class="w3-right  w3-padding-large ">
                         <a href="SelectExam?className=${className}" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge">
                     </div>

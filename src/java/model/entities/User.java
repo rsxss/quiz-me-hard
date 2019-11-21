@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName")
     , @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName")
     , @NamedQuery(name = "User.findByIsAdmin", query = "SELECT u FROM User u WHERE u.isAdmin = :isAdmin")
+    , @NamedQuery(name = "User.findByNonStudent", query = "SELECT u FROM User u LEFT JOIN u.student s"
+            + " WHERE s IS NULL")
     , @NamedQuery(name = "User.findStudent", query = "SELECT s FROM User u JOIN u.student s WHERE u.id = :id")})
 public class User implements Serializable {
 

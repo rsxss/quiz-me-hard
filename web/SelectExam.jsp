@@ -141,48 +141,50 @@
                 <c:if test="${sessionScope.user.isAdmin}">
                     <a href="AddExam?className=${classroom.classroomName}" class="w3-button  w3-black  w3-round-xlarge" style="margin: 10px">+ Add Exam</a>
                 </c:if>
-                <table class="w3-table w3-striped">
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <c:choose>
-                            <c:when test="${sessionScope.user.isAdmin}">
-                                <th>Check</th>
-                                <th><input type="button" value="Delete"></th>                              
-                            </c:when>
-                            <c:otherwise>
-                                <th>Score (100)</th>
-                                <th></th>
-                            </c:otherwise>
-                        </c:choose>
-                    </tr>
-                    <c:forEach items="${classroom.classroomExamCollection}" var="classroomExam" varStatus="vs">
+                <form action="DeleteExam" method="POST">
+                    <table class="w3-table w3-striped">
                         <tr>
-                            <td>${vs.count}</td>
-                            <td>${classroomExam.name}</td>
+                            <th>#</th>
+                            <th>Name</th>
                             <c:choose>
                                 <c:when test="${sessionScope.user.isAdmin}">
-                                    <td>
-                                        <a href="Exam?className=${classroom.classroomName}&examId=${classroomExam.id}" 
-                                           class="w3-button w3-teal">
-                                            View
-                                        </a>
-                                    </td>
-                                    <td><input type="checkbox"  class="w3-check"></td>                            
+                                    <th>Check</th>
+                                    <th><input type="submit" value="Delete"></th>                              
                                 </c:when>
                                 <c:otherwise>
-                                    <td></td>
-                                    <td>
-                                        <a href="Exam?className=${classroom.classroomName}&examId=${classroomExam.id}" 
-                                           class="w3-button w3-teal">
-                                           Start
-                                        </a>
-                                    </td>
+                                    <th>Score (100)</th>
+                                    <th></th>
                                 </c:otherwise>
                             </c:choose>
                         </tr>
-                    </c:forEach>
-                </table>
+                        <c:forEach items="${classroom.classroomExamCollection}" var="classroomExam" varStatus="vs">
+                            <tr>
+                                <td>${vs.count}</td>
+                                <td>${classroomExam.name}</td>
+                                <c:choose>
+                                    <c:when test="${sessionScope.user.isAdmin}">
+                                        <td>
+                                            <a href="Exam?className=${classroom.classroomName}&examId=${classroomExam.id}" 
+                                               class="w3-button w3-teal">
+                                                View
+                                            </a>
+                                        </td>
+                                        <td><input type="checkbox" name="${classroomExam.id}" class="w3-check"></td>                            
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td></td>
+                                        <td>
+                                            <a href="Exam?className=${classroom.classroomName}&examId=${classroomExam.id}" 
+                                               class="w3-button w3-teal">
+                                               Start
+                                            </a>
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </form>
             </div>
     </body>
 </html>

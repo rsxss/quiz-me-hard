@@ -7,10 +7,21 @@ package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.controller.ClassroomJpaController;
+import model.controller.ClassroomMemberJpaController;
+import model.controller.UserJpaController;
+import model.entities.Classroom;
+import model.entities.ClassroomMember;
+import model.entities.User;
 
 /**
  *
@@ -29,6 +40,13 @@ public class AddClassServlet extends BaseServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            UserJpaController ujc = new UserJpaController(utx, emf);
+            List<User> users = ujc.findByNonStudent();
+//            getServletContext().log("users.length: "+users.size());
+//            users.forEach((user) -> {
+//                getServletContext().log(user.toString());
+//        });
+            request.setAttribute("users", users);
             getServletContext().getRequestDispatcher("/AddClass.jsp").forward(request, response);
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -43,7 +61,7 @@ public class AddClassServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            getServletContext().getRequestDispatcher("/AddClass").forward(request, response);
     }
 
     /**
@@ -59,6 +77,30 @@ public class AddClassServlet extends BaseServlet {
             throws ServletException, IOException {
         String classroomName = request.getParameter("className");
         String classroomDescription = request.getParameter("classDescription");
+        Integer teacherId = Integer.valueOf(request.getParameter("teacher"));
+
+        UserJpaController ujc = new UserJpaController(utx, emf);
+        //ClassroomMemberJpaController cmjc = new ClassroomMemberJpaController(utx, emf);
+        ClassroomJpaController cjc = new ClassroomJpaController(utx, emf);
+
+        Collection<ClassroomMember> classroomMembers = new ArrayList<>();
+        ClassroomMember firstClassroomMember = new ClassroomMember();
+
+        Classroom classroom = new Classroom();
+        classroom.setClassroomName(classroomName);
+        classroom.setClassroomDescription(classroomDescription);
+
+        firstClassroomMember.setClassroomId(classroom);
+        firstClassroomMember.setUserId(ujc.findUser(teacherId));
+        classroomMembers.add(firstClassroomMember);
+
+        classroom.setClassroomMemberCollection(classroomMembers);
+        try {
+            cjc.create(classroom);
+        } catch (Exception ex) {
+            Logger.getLogger(AddClassServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        response.sendRedirect(request.getHeader("Referer"));
         
     }
 

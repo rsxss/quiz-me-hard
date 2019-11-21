@@ -275,6 +275,12 @@ public class UserJpaController implements Serializable {
         } return null;
     }
     
+    public List<User> findByNonStudent(){
+        EntityManager em = getEntityManager();
+        TypedQuery<User> query = em.createNamedQuery("User.findByNonStudent", User.class);
+        return query.getResultList();
+    }
+    
     public int getUserCount() {
         EntityManager em = getEntityManager();
         try {
