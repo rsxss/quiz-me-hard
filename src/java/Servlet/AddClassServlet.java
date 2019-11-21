@@ -81,25 +81,27 @@ public class AddClassServlet extends BaseServlet {
         String classroomName = request.getParameter("className");
         String classroomDescription = request.getParameter("classDescription");
         Integer teacherId = Integer.valueOf(request.getParameter("teacher"));
+        
+        getServletContext().log("teacherId: "+teacherId);
 
         UserJpaController ujc = new UserJpaController(utx, emf);
-        //ClassroomMemberJpaController cmjc = new ClassroomMemberJpaController(utx, emf);
+        ClassroomMemberJpaController cmjc = new ClassroomMemberJpaController(utx, emf);
         ClassroomJpaController cjc = new ClassroomJpaController(utx, emf);
-
-        Collection<ClassroomMember> classroomMembers = new ArrayList<>();
-        ClassroomMember firstClassroomMember = new ClassroomMember();
 
         Classroom classroom = new Classroom();
         classroom.setClassroomName(classroomName);
         classroom.setClassroomDescription(classroomDescription);
 
-        firstClassroomMember.setClassroomId(classroom);
-        firstClassroomMember.setUserId(ujc.findUser(teacherId));
-        classroomMembers.add(firstClassroomMember);
-
-        classroom.setClassroomMemberCollection(classroomMembers);
+//        classroom.setClassroomMemberCollection(classroomMembers);
         try {
             cjc.create(classroom);
+            Collection<ClassroomMember> classroomMembers = new ArrayList<>();
+            ClassroomMember firstClassroomMember = new ClassroomMember();
+            firstClassroomMember.setClassroomId(cjc.findClassroomByName(classroom.getClassroomName()));
+            firstClassroomMember.setUserId(ujc.findUser(teacherId));
+            classroomMembers.add(firstClassroomMember);
+            classroom.setClassroomMemberCollection(classroomMembers);
+            cjc.edit(classroom);
             response.sendRedirect("SelectClass");
         } catch (Exception ex) {
             getServletContext().log("Create classroom failed.");
