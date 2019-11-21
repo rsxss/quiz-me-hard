@@ -7,6 +7,7 @@ package model.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Classroom.findById", query = "SELECT c FROM Classroom c WHERE c.id = :id")
     , @NamedQuery(name = "Classroom.findByClassroomName", query = "SELECT c FROM Classroom c WHERE c.classroomName = :classroomName")})
 public class Classroom implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "classroomId")
+    private List<ClassroomTeacher> classroomTeacherList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -134,6 +138,15 @@ public class Classroom implements Serializable {
     @Override
     public String toString() {
         return "jpa.entities.Classroom[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<ClassroomTeacher> getClassroomTeacherList() {
+        return classroomTeacherList;
+    }
+
+    public void setClassroomTeacherList(List<ClassroomTeacher> classroomTeacherList) {
+        this.classroomTeacherList = classroomTeacherList;
     }
     
 }

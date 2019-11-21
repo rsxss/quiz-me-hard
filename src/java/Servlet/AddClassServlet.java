@@ -120,18 +120,19 @@ public class AddClassServlet extends BaseServlet {
         firstClassroomMember.setClassroomId(managedClassroom);
         firstClassroomMember.setUserId(managedUser);
         cmjc.create(firstClassroomMember);
-        Collection<ClassroomTeacher> classroomTeachers = preparedClassroomTeacher(firstClassroomMember);
+        Collection<ClassroomTeacher> classroomTeachers = preparedClassroomTeacher(classroom, firstClassroomMember);
         firstClassroomMember.setClassroomTeacherCollection(classroomTeachers);
         cmjc.edit(firstClassroomMember);
         classroomMembers.add(firstClassroomMember); return classroomMembers;
         
     }
     
-    private Collection<ClassroomTeacher> preparedClassroomTeacher(ClassroomMember classroomMember) throws Exception{
+    private Collection<ClassroomTeacher> preparedClassroomTeacher(Classroom classroom, ClassroomMember classroomMember) throws Exception{
         ClassroomTeacherJpaController ctjc = new ClassroomTeacherJpaController(utx, emf);
         Collection<ClassroomTeacher> classroomTeachers = new ArrayList<>();
         ClassroomTeacher classroomTeacher = new ClassroomTeacher();
         classroomTeacher.setClassroomMemberId(classroomMember);
+        classroomTeacher.setClassroomId(classroom);
         ctjc.create(classroomTeacher);
         classroomTeacher = ctjc.findClassroomTeacherByClassroomMember(classroomMember);
         classroomTeachers.add(classroomTeacher);

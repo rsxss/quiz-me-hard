@@ -8,6 +8,7 @@ package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.EntityManagerFactory;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 import model.controller.ClassroomJpaController;
 import model.entities.Classroom;
+import model.entities.ClassroomMember;
 
 /**
  *
@@ -55,6 +57,8 @@ public class ClassInfoServlet extends BaseServlet {
 //            ClassroomJpaController cjc = new ClassroomJpaController(emf);
 //            Classroom classroom = cjc.findClassroomByName(classroomName);
             Classroom classroom = getClassroom(utx, emf, classroomName);
+            Collection<ClassroomMember> classroomMembers = classroom.getClassroomMemberCollection();
+            classroomMembers.forEach(member -> getServletContext().log(member.toString()));
             if (!(Objects.isNull(classroom))){
                 request.setAttribute("classroom", classroom);
                 getServletContext().getRequestDispatcher("/ClassInfo.jsp").forward(request,response);

@@ -33,6 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
                 query = "SELECT c FROM ClassroomTeacher c JOIN c.classroomMemberId cm WHERE cm = :classroomMember")})
 public class ClassroomTeacher implements Serializable {
 
+    @JoinColumn(name = "classroom_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Classroom classroomId;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -89,6 +93,14 @@ public class ClassroomTeacher implements Serializable {
     @Override
     public String toString() {
         return "jpa.entities.ClassroomTeacher[ id=" + id + " ]";
+    }
+
+    public Classroom getClassroomId() {
+        return classroomId;
+    }
+
+    public void setClassroomId(Classroom classroomId) {
+        this.classroomId = classroomId;
     }
     
 }

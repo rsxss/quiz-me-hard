@@ -133,10 +133,16 @@
                 <h4>Description</h4>
                 ${classroom.classroomDescription}
                 <h4>Teacher</h4>
-                
+                <c:forEach items="${classroom.classroomMemberCollection}" var="classroomMember" varStatus="vs">
+                    <c:forEach items="${classroomMember.classroomTeacherCollection}" var="classroomTeacher" varStatus="vs">
+                        <c:if test="${classroomTeacher.classroomId.classroomName.equals(classroom.classroomName)}">
+                            ${classroomMember.userId.firstName} ${classroomMember.userId.lastName}<br/>
+                        </c:if>
+                    </c:forEach>
+                </c:forEach>
                 <h4>Member</h4>
                 <c:forEach items="${classroom.classroomMemberCollection}" var="classroomMember" varStatus="vs">
-                    ${classroomMember.userId.firstName} ${classroomMember.userId.lastName}
+                    <c:out value="${classroomMember.userId.firstName} ${classroomMember.userId.lastName}"/><br/>
                 </c:forEach>
             </div>
     </body>
