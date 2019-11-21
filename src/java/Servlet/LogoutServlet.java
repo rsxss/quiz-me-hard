@@ -7,6 +7,7 @@ package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +32,18 @@ public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        session.invalidate();
-        request.setAttribute("message", "Logout success");
+        String message = null;
+        String messageLevel = null;
+        if(session==null||Objects.isNull(session.getAttribute("user"))){
+            message = "NOT LOGGED IN";
+            messageLevel = "error";
+        } else {
+            session.invalidate();
+            message = "LOGOUT SUCCESS";
+            messageLevel = "success";
+        }
+        request.setAttribute("message", message);
+            request.setAttribute("messageLevel", messageLevel);
         getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
     }
 

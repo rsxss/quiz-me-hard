@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>ClassInfoServlet</servlet-name>
         <servlet-class>Servlet.ClassInfoServlet</servlet-class>
@@ -36,6 +47,10 @@
         <servlet-name>AddExamSevlet</servlet-name>
         <servlet-class>Servlet.AddExamSevlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteExamServlet</servlet-name>
+        <servlet-class>Servlet.DeleteExamServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClassInfoServlet</servlet-name>
         <url-pattern>/ClassInfo</url-pattern>
@@ -71,6 +86,10 @@
     <servlet-mapping>
         <servlet-name>AddExamSevlet</servlet-name>
         <url-pattern>/AddExam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteExamServlet</servlet-name>
+        <url-pattern>/DeleteExam</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

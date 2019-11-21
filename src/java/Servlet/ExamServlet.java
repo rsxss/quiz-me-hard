@@ -5,18 +5,29 @@
  */
 package Servlet;
 
+import static Servlet.ClassInfoServlet.getClassroom;
+import config.App;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.controller.ClassroomExamJpaController;
+import model.entities.Classroom;
+import model.entities.ClassroomExam;
 
 /**
  *
  * @author Asus
  */
-public class ExamServlet extends HttpServlet {
+public class ExamServlet extends BaseServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +55,25 @@ public class ExamServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String classroomName = request.getParameter("className").trim();
+        int examId = Integer.parseInt(request.getParameter("examId"));
+        
+        ClassroomExamJpaController cejpc = new ClassroomExamJpaController(utx, emf);
+        ClassroomExam ce = cejpc.findClassroomExam(examId);
+        if (!(Objects.isNull(classroomName)||classroomName.equals(""))){
+            ClassroomExam classroomExam = ce;//getClassroomExam(emf, examId);
+            if (!(Objects.isNull(classroomExam))){
+                request.setAttribute("classroomExam", classroomExam);
+                request.setAttribute("classroomName", classroomName);
+                getServletContext().getRequestDispatcher("/Exam.jsp").forward(request,response);
+                return;
+            }
+        } 
+        request.setAttribute("message", "Classroom doesn't exists.");
+        request.setAttribute("messageLevel", "error");
+        List<Classroom> classrooms = SelectClassServlet.getClassrooms(utx, emf);
+        request.setAttribute("classrooms", classrooms);
+        getServletContext().getRequestDispatcher("/SelectClass.jsp").forward(request, response);
     }
 
     /**
@@ -60,7 +89,12 @@ public class ExamServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    
+//    public static ClassroomExam getClassroomExam(EntityManagerFactory emf, int examId){
+//        ClassroomExamJpaController cejpc = new ClassroomExamJpaController(emf);
+//        return cejpc.findClassroomExam(examId);
+//    }
+    
     /**
      * Returns a short description of the servlet.
      *
