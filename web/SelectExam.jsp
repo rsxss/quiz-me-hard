@@ -139,17 +139,18 @@
             <div class="w3-container" style="margin-left:10%">
                 <h1>Exam</h1>
                 <c:if test="${sessionScope.user.isAdmin}">
-                    <a href="AddExam?className=${classroom.classroomName}" class="w3-button  w3-black  w3-round-xlarge" style="margin: 10px">+ Add Exam</a>
+                    <a href="AddExam?className=${classroom.classroomName}" class="w3-button  w3-teal w3-round-large" style="margin: 10px">+ Add Exam</a>
                 </c:if>
                 <form action="DeleteExam" method="POST">
-                    <table class="w3-table w3-striped">
+                    <table class="w3-table w3-bordered">
                         <tr>
                             <th>#</th>
                             <th>Name</th>
+                            <th>Tag</th>
                             <c:choose>
                                 <c:when test="${sessionScope.user.isAdmin}">
-                                    <th>Check</th>
-                                    <th><input type="submit" value="Delete"></th>                              
+                                    <th></th>
+                                    <th><input type="submit" value="Delete" class="w3-button  w3-red w3-round-large"></th>                              
                                 </c:when>
                                 <c:otherwise>
                                     <th>Score (100)</th>
@@ -161,14 +162,14 @@
                             <tr>
                                 <td>${vs.count}</td>
                                 <td>${classroomExam.name}</td>
+                                <td>Tag</td>
                                 <c:choose>
                                     <c:when test="${sessionScope.user.isAdmin}">
                                         <td>
                                             <a href="Exam?className=${classroom.classroomName}&examId=${classroomExam.id}" 
-                                               class="w3-button w3-teal">
-                                                View
-                                            </a>
-                                        </td>
+                                               class="w3-button w3-blue">View</a>
+                                               <a href="#"  class="w3-button w3-yellow">Edit</a>
+                                        </td> 
                                         <td><input type="checkbox" name="${classroomExam.id}" class="w3-check"></td>                            
                                     </c:when>
                                     <c:otherwise>

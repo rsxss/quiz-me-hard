@@ -16,7 +16,7 @@
         body,h1 {font-family: "Raleway", sans-serif}
         body, html {height: 100%}
         .bgimg {
-            background-image: url('images/bg1.jpg');
+            background: #202C46;
             min-height: 100%;
             background-position: center;
             background-size: cover;
@@ -24,25 +24,26 @@
     </style>
     <body>
         <div class="bgimg w3-display-container w3-animate-opacity w3-text-white ">
-            <div class="w3-large w3-display-topleft w3-padding-large w3-text-dark-gray " style="margin-right: 8%">
-                <a href="index.jsp">Home Page</a>
-            </div>
-            <div class="w3-display-middle  w3-wide w3-text-light-grey w3-center ">
+            <div class="w3-display-middle  w3-text-light-grey " >
+                <div style="margin: 0 0 20px 0">
+                    <a href="index.jsp" class="w3-text-white w3-animate-top">Back to Home Page</a>
+                </div>
                 <div class="w3-border w3-animate-top w3-padding-large ">
                     <div class="w3-light-grey  w3-padding-large w3-animate-top">
-                        <h1 class="w3-jumbo w3-animate-top ">Login</h1>
-                        <hr class="w3-border-grey w3-animate-top" style="margin:auto;width:40%">
-                        <form action="Login" method="post" class="w3-large w3-center w3-animate-top ">
-                            <p>Username : <input type="text"  name="username" class="w3-round-large" required/><br>
-                            <p>Password : <input type="password"  name="password" class="w3-round-large" required/><br>                    
-                                <br><label><input type="submit" value="Login"  class="w3-btn w3-teal w3-border w3-border-white w3-round-xlarge "></label>
-                                <!--<br><a href="Login?role=admin">Admin</a> <a href="Login?role=teacher">Teacher</a> <a href="Login?role=student">Student</a>-->
+                        <h1 class="w3-jumbo w3-animate-top w3-center">Login</h1>
+                        <hr class="w3-border-grey w3-animate-top" style="margin:auto;width:80%">
+                        <form action="Login" method="post" class="w3-large  w3-animate-top ">
+                            <br>
+                                Username :<input type="text"  name="username" class="w3-input" required/><br>
+                                Password : <input type="password"  name="password" class="w3-input" required/><br>                    
+                                <label ><center><input type="submit" value="Login"  class="w3-btn w3-teal w3-border w3-border-white w3-round-large "></center></label>
                         </form>
-                        <div class="w3-container ${messageLevel=="success" ? "w3-green":"w3-red"} ">
+                        <div class="w3-container w3-center ${messageLevel=="success" ? "w3-green":"w3-red"} ">
                             ${message}
                         </div>
-                    </div>
+                    </div>                  
                 </div>
+                        
             </div>
         </div>
     </body>
