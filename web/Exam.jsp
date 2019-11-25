@@ -69,14 +69,14 @@
             <div style="margin-left:25%">
                 <div class="w3-container" >
                     <p></p>
-                    <textarea id="codeeditor" ></textarea>
+                    <textarea id="code-editor" ></textarea>
                     <center><button  class="w3-button  w3-teal" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
                     <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
                     <center><button  class="w3-button  w3-yellow" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                 </div>
                 <script>
-                    var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
+                    var editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
                         mode: "python",
                         lineNumbers: true,
                         autofocus: true,
@@ -114,14 +114,14 @@
             <div style="margin-left:25%">
                 <div class="w3-container" >
                     <p></p>
-                    <textarea id="codeeditor" ></textarea>
+                    <textarea id="code-editor" ></textarea>
                     <center><button  class="w3-button  w3-teal" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
                     <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
                     <center><button  class="w3-button  w3-yellow" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                 </div>
                 <script>
-                    var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
+                    var editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
                         mode: "python",
                         lineNumbers: true,
                         autofocus: true,
@@ -158,14 +158,14 @@
             <div style="margin-left:25%">
                 <div class="w3-container" >
                     <p></p>
-                    <textarea id="codeeditor" ></textarea>
+                    <textarea id="code-editor" ></textarea>
                     <center><button  class="w3-button  w3-teal" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
                     <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
                     <center><button  class="w3-button  w3-yellow" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                 </div>
                 <script>
-                    var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
+                    var editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
                         mode: "python",
                         lineNumbers: true,
                         autofocus: true,
@@ -207,7 +207,7 @@
             <div style="margin-left:25%">
                 <div class="w3-container" >
                     <p></p>
-                    <textarea id="codeeditor" ></textarea>
+                    <textarea id="code-editor" ></textarea>
                     <center><button  class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
                     <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
@@ -216,19 +216,33 @@
                     </c:if>
                 </div>
                 <script>
-                    var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
+                    var editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
                         mode: "python",
                         lineNumbers: true,
                         autofocus: true,
                         extraKeys: {"Ctrl-Space": "autocomplete"}
                     });
-                    editor.setSize("100%", 250)
+                    editor.setSize("100%", 250);
                 </script>
                 <script>
                     function checkSubmit() {
                         if (confirm("Are you sure you want to submit?")) {
                             alert("Your Answer has been submitted.");
-                            window.location.replace("SelectExam");
+                            const formData = new FormData();
+                            formData.append('code', JSON.stringify(editor.getValue()));
+                            formData.append('lang', 'python');
+                            fetchOptions = {
+                                method: 'POST',
+//                                headers: {
+//                                    'Content-Type': //'application/json;charset=utf-8'
+//                                }, 
+                                body: formData
+                            };
+                            fetch("http://localhost:8080/quiz-me-hard/Exam", fetchOptions)
+                                    .then(response => response.json())
+                                    .catch(rejected => console.log("rejected:", rejected))
+                                    .then(json => console.log("json",json));
+                            //window.location.replace("SelectExam?className=${classroomName}");
                         }
                     }
                 </script>

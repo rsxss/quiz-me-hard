@@ -19,9 +19,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.utils.ExecutionData;
 import model.controller.ClassroomExamJpaController;
 import model.entities.Classroom;
 import model.entities.ClassroomExam;
+
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
 
 /**
  *
@@ -87,7 +93,27 @@ public class ExamServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String code = "{'code':'x=5\nassert_equal(x,4,10)\nassert_equal(x,5,20)\n','lang':'python'}";
+        Gson gson = new Gson();
+        ExecutionData execData = gson.fromJson(code, ExecutionData.class);
+        getServletContext().log("execData");
+        String name = request.getParameter("name");
+        getServletContext().log(name);
+        Enumeration enx = request.getParameterNames();
+        while(enx.hasMoreElements()){
+            getServletContext().log((String) enx.nextElement());
+        }
+        
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        try{
+            out.write(gson.toJson(new ExecutionData(code, "python")));
+            out.flush();
+        } finally{
+            out.close();
+        }
+        //getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
     }
     
 //    public static ClassroomExam getClassroomExam(EntityManagerFactory emf, int examId){
