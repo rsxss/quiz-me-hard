@@ -127,7 +127,7 @@
                 <div class=" w3-display-bottomleft" style="margin: 10px;margin-bottom: 50px"><a href="SelectClass">Back to Classes</a></div>
             </div>
             <div class="w3-container" style="margin-left:10%">
-                <h1>Class Information</h1>
+                <h1 >Class Information</h1>
                 <h4>Class Name</h4>
                 ${classroom.classroomName}
                 <h4>Description</h4>

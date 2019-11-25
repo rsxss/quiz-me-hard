@@ -13,11 +13,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <style>
             body,h1 {font-family: "Raleway", sans-serif}
             body, html {height: 100%}
             .bgimg {
-                background-image: url('images/bg2.png');
+                background: linear-gradient(0deg, rgba(48,86,166,1) 0%, rgba(41,53,140,1) 100%);
                 min-height: 100%;
                 background-position: center;
                 background-size: cover;
@@ -32,7 +36,6 @@
         </style>
     </head>
     <body>
-        <c:out value="Welcome: ${sessionScope.user.firstName} ${sessionScope.user.lastName}"/>
         <%--<c:if test="${user.equals('admin')}">
             <div class="bgimg w3-display-container w3-text-white ">
                 <div class="w3-container w3-teal">
@@ -119,30 +122,41 @@
             </div>
         </c:if> --%>
         <div class="bgimg w3-display-container w3-text-white">
-                <div class="w3-container w3-teal">
-                    <h1>Quiz Me Hard</h1>
-                    <div class="w3-display-topright w3-padding-large ">
-                        <span>${user.firstName} ${user.lastName}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
-                    </div>
-                </div>
-                <div>
-                    <div class="box w3-display-middle w3-padding-large ">
-                        <h2 class="w3-wide">Classroom</h2>
+            <div class="w3-container w3-text-white" style="background-color: #202C46;padding-bottom: 40px">
+                <h1 style="color: #fffa4b">Quiz Me Hard</h1>
+                <div class="w3-display-topright w3-padding-large ">
+                    <div class="w3-large">${user.firstName} ${user.lastName}</div> 
+                    <div align="right"><a class=" w3-btn w3-border w3-round-large w3-white w3-text-grey w3-hover-yellow" href="Logout">Logout</a></div>
+                </div> 
+            </div>
+
+                    <div class="w3-container">
+                        <span class="w3-xxxlarge" style="margin: 20px 0 0 20px">Classroom</span>
                         <c:if test="${sessionScope.user.isAdmin}">
-                            <a href="AddClass" class="w3-button  w3-black w3-display-topright w3-round-xlarge" style="margin: 10px">+ Add Class</a>
+                            <a href="AddClass" class="w3-button  w3-teal w3-round-large" style="margin: 10px">+ Add Class</a>
                         </c:if>
-                        <ul class="w3-ul w3-border">
-                            <c:forEach items="${requestScope.classrooms}" var="classroom">
-                                <li class="w3-hover-white">
-                                    <a href="ClassInfo?className=${classroom.classroomName}">
+                    </div>
+            
+            <div class="card-deck w3-text-black">
+                <c:forEach items="${requestScope.classrooms}" var="classroom">
+                    <div class="col-sm-3" style="margin: 20px">
+                        <div class="card">
+                            <center><img src="https://icon-library.net/images/icon-for-classroom/icon-for-classroom-28.jpg" width="200px"></center>
+                            <div class="card-body">
+                                <h3 class="card-text"><a href="ClassInfo?className=${classroom.classroomName}">
                                         ${classroom.classroomName}
                                     </a>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                        <br>
+                                </h3>
+                                <c:if test="${sessionScope.user.isAdmin}">
+                                    <a href="#" class="w3-button  w3-red w3-display-topright w3-circle" style="margin: 10px">X</a>
+                                </c:if>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </c:forEach>                    
+            </div> 
+
+
+        </div>
     </body>
 </html>

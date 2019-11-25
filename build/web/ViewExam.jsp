@@ -46,11 +46,10 @@
             <h3 class="w3-bar-item">Menu</h3>
             <a href="ClassInfo" class="w3-bar-item w3-button">Class Info</a>
             <a href="SelectExam" class="w3-bar-item w3-button w3-grey">Exam</a>
-            <div class=" w3-display-bottomleft" style="margin: 10px;margin-bottom: 50px"><a href="SelectClass">Back to Classes</a></div>
         </div>
         <div class="w3-container" style="margin-left:10%">
             <h1>Testing Cookies</h1>
-            <table class="w3-table w3-striped">
+            <table class="w3-table w3-bordered">
                 <tr>
                     <th>StudentID</th>
                     <th>First Name</th>

@@ -25,7 +25,7 @@
             }
             .box{
                 border-radius: 25px;
-                background-color: cadetblue   ;
+                background-color: #3056A6   ;
                 min-height: 40%;
                 min-width:  40%;
             }
@@ -33,26 +33,36 @@
     </head>
     <body>
         <div class="bgimg w3-display-container w3-text-white">
-            <div class="w3-container w3-teal ">
-                <h1>Quiz Me Hard</h1>
+          <div class="w3-container w3-text-white" style="background-color: #202C46;padding-bottom: 20px">
+                <h1 style="color: #fffa4b">Quiz Me Hard</h1>
                 <div class="w3-display-topright w3-padding-large ">
-                    <span>${user.firstName} ${user.lastName}</span> <a href="Logout" class="w3-btn w3-teal w3-border w3-round-xlarge w3-hover-white">Logout</a>
-                </div>
+                    <div class="w3-large">${user.firstName} ${user.lastName}</div> 
+                    <div align="right"><a class=" w3-btn w3-border w3-round-large w3-white w3-text-grey w3-hover-yellow" href="Logout">Logout</a></div>
+                </div> 
             </div>
+                    
             <div class="box w3-display-middle w3-padding-large" >
-                <h5>Add Class</h5>
+                <h3>Add Class</h3>
                 <form action="AddClass" method="post">
-                    <p>Class name : <input type="text" name="className" class="w3-round-large"></p>
-                    <p>Class details :</p>
-                    <p><textarea rows="4" cols="50" name="classDescription" placeholder="Enter here..." class="w3-round-large"></textarea>
+                    <p>Class name : <input type="text" name="className" placeholder="Enter here..." class="w3-input"></p>
                     <p>Teacher name : </p>
                     <p></p>
+                    <select class="w3-select" name="option">
+                        <c:forEach items="${requestScope.users}" var="user" varStatus="vs">
+                            <option value="${user.id}">${user.firstName} ${user.lastName}</option>
+                        </c:forEach>
+                    </select>
+                    <p>Class details :</p>
+                    <p><textarea rows="4" cols="50" name="classDescription" placeholder="Enter here..." class="w3-input"></textarea>
+
+                    
                     <c:forEach items="${requestScope.users}" var="user" varStatus="vs">
                         <c:set var="userName" value="${user.firstName} ${user.lastName}"/>
                         <input type="radio" name="teacher" value="${user.id}"/><c:out value="${pageScope.userName}"/><br/>
                     </c:forEach>
+                        
                     <div class="w3-display-bottomright w3-padding-large ">
-                        <a href="SelectClass" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border w3-border-gray w3-round-xlarge">
+                        <a href="SelectClass" class="w3-btn w3-red w3-border w3-border w3-round-large" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border w3-border w3-round-large">
                     </div>
                 </form>   
             </div>

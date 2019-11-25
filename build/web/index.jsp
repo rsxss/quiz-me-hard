@@ -14,11 +14,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Pridi&display=swap" rel="stylesheet">
         <style>
-            body,h1 {font-family: "Raleway", sans-serif}
+            body,h1 {font-family: 'Pridi', serif;}
             body, html {height: 100%}
             .bgimg {
-                background-image: url('images/bg4.jpg');
+                background-image: url('images/bg3.png');
                 min-height: 100%;
                 background-position: center;
                 background-size: cover;
@@ -26,20 +32,74 @@
         </style>
     </head>
     <body>
-
-        <div class="bgimg w3-display-container w3-text-white ">
+        <nav class="navbar navbar-expand-md fixed-top" style="background-color: #202C46">
+            <h2 style="color: #fffa4b">Quiz Me Hard</h2>
+            <ul class="navbar-nav ml-md-auto">
+                <li >
+                    <a class="nav-link w3-large w3-text-white" href=""  data-toggle="modal" data-target="#myModal" style="margin-right: 20px">About</a>
+                </li>
+                <li>
+                    <a class="w3-large w3-btn w3-border w3-round-large w3-white w3-text-grey w3-hover-yellow" href="Login.jsp">Login</a>
+                </li>
+            </ul>
+        </nav>
+        <div class=" w3-container w3-text-white bgimg">
             <div class="w3-display-middle w3-padding-large  w3-wide w3-text-light-grey w3-center">
-                <div class=" w3-padding-large" style="margin-top: -15%">
-                    <h1 class="w3-jumbo w3-animate-top">- Quiz Me Hard -</h1>
-                    <hr class="w3-border-indigo w3-animate-top" style="margin:auto;width:40%">
+                <div class=" w3-padding-large" style="margin-top: -5%">
                     <div class="w3-panel">
-                        <span style="font-size:50px;line-height:2.5em;opacity:0.5">❝</span>
-                        <p class="w3-large w3-animate-top" style="margin-top:-40px"><i>เว็บสำหรับในการฝึกเขียนและทดสอบโปรแกรมภาษา Python</i></p>
+                        <div class="w3-large w3-animate-top"><h1>เว็บสำหรับในการฝึกเขียนและทดสอบโปรแกรมภาษา Python</h1></div>
                     </div>
                     <p class="w3-large w3-animate-top">สามารถที่จะแบ่งห้องเรียนสำหรับแต่ละวิชา สามารถตรวจข้อสอบและแสดงผลคะแนนได้ </p>
-                 </div>
-            </div>         
-                <a class="w3-display-middle w3-padding-large w3-xlarge w3-btn w3-border w3-round-xlarge w3-sand w3-text-grey" style="margin-top: 13%" href="Login.jsp">Login</a>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" width="200px" style="margin: 20px">
+                </div>
+            </div>
+        </div>
+        
+        <div class="container" style="margin-top: 50px;margin-bottom: 200px">
+            <center>
+                <div class="w3-panel">
+                    <div class="w3-large"><h1>Users</h1></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img src="https://i.pinimg.com/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png" width="200px" style="margin: 20px">
+                        <h2>Admin</h2>
+                        <h4>ดูแลระบบ</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="https://deventerhuisgenoten.nl/storage/avatars/avatar-v.png" width="200px" style="margin: 20px">
+                        <h2>Teacher</h2>
+                        <h4>สร้างแบบทดสอบและให้คะแนน</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="https://inspireducation.org.pk/wp-content/uploads/2019/06/person-girl-flat.png" width="200px" style="margin: 20px">
+                        <h2>Student</h2>
+                        <h4>ทำแบบทดสอบ</h4>
+                    </div>
+                </div>
+            </center>
+        </div>
+        <div class="w3-container w3-text-white" style="background-color: #202C46;padding: 10px">
+            <center>Created by Quiz Me Hard developer</center>
+        </div>
+
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header w3-xlarge">
+                        <h4 class="modal-title">สมาชิก</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body w3-large">
+                        <p>61130500013 นายจิรพัทธ์ เกลาเกลี้ยง</p>
+                        <p>61130500032 นายณัฐวรพงษ์ ลอยไสว	</p>
+                        <p>61130500050 นางสาวธมลวรรณ เปี่ยมหัสพล</p>
+                        <br>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -23,7 +23,6 @@
         body,h1 {font-family: "Raleway", sans-serif; }
         body, html {height: 100%;background-color: #eee }
         .bgimg {
-            background-image: url('images/bg2.png');
             min-height: 100%;
             background-position: center;
             background-size: cover;
@@ -199,7 +198,7 @@
                 <jsp:param name="className" value="${classroomName}"/>
                 <jsp:param name="classExam" value="${classroomExam.name}"/>
             </jsp:include>
-            <div class="w3-sidebar w3-yellow w3-bar-block" style="width:25%">
+            <div class="w3-sidebar w3-bar-block" style="width:25%;background-color: #fffa4b">
                 <h3 class="w3-bar-item">Instruction</h3>
                 <p class="w3-bar-item">
                     ${classroomExam.description}
@@ -209,10 +208,10 @@
                 <div class="w3-container" >
                     <p></p>
                     <textarea id="codeeditor" ></textarea>
-                    <center><button  class="w3-button  w3-teal" style="margin-top: 10px">&blacktriangleright; Run</button></center>
+                    <center><button  class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
                     <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
-                    <center><button  class="w3-button  w3-yellow" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
+                    <center><button  class="w3-button  w3-yellow w3-border" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                 </div>
                 <script>
                     var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {
