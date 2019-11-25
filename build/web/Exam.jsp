@@ -211,7 +211,9 @@
                     <center><button  class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
                     <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
-                    <center><button  class="w3-button  w3-yellow w3-border" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
+                    <c:if test="${!sessionScope.user.isAdmin}">
+                        <center><button  class="w3-button  w3-yellow w3-border" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
+                    </c:if>
                 </div>
                 <script>
                     var editor = CodeMirror.fromTextArea(document.getElementById("codeeditor"), {

@@ -148,6 +148,7 @@
                                     </a>
                                 </h3>
                                 <c:if test="${sessionScope.user.isAdmin}">
+                                    <a href="#" class="w3-button  w3-yellow w3-round" >Edit</a>
                                     <a href="#" class="w3-button  w3-red w3-display-topright w3-circle" style="margin: 10px">X</a>
                                 </c:if>
                             </div>
