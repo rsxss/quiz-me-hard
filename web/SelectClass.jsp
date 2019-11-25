@@ -130,16 +130,16 @@
                 </div> 
             </div>
 
-                    <div class="w3-container">
-                        <span class="w3-xxxlarge" style="margin: 20px 0 0 20px">Classroom</span>
-                        <c:if test="${sessionScope.user.isAdmin}">
-                            <a href="AddClass" class="w3-button  w3-teal w3-round-large" style="margin: 10px">+ Add Class</a>
-                        </c:if>
-                    </div>
-            
+            <div class="w3-container">
+                <span class="w3-xxxlarge" style="margin: 20px 0 0 20px">Classroom</span>
+                <c:if test="${sessionScope.user.isAdmin}">
+                    <a href="AddClass" class="w3-button  w3-teal w3-round-large" style="margin: 10px">+ Add Class</a>
+                </c:if>
+            </div>
+
             <div class="card-deck w3-text-black">
                 <c:forEach items="${requestScope.classrooms}" var="classroom">
-                    <div class="col-sm-3" style="margin: 20px">
+                    <div class="col-sm-3" style="margin-top: 20px">
                         <div class="card">
                             <center><img src="https://icon-library.net/images/icon-for-classroom/icon-for-classroom-28.jpg" width="200px"></center>
                             <div class="card-body">
@@ -156,8 +156,6 @@
                     </div>
                 </c:forEach>                    
             </div> 
-
-
         </div>
     </body>
 </html>
