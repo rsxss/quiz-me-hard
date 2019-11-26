@@ -6,6 +6,7 @@
 package model.retrofit;
 
 import model.utils.ExecutionData;
+import model.utils.ExecutionResult;
 
 import retrofit2.Call;
 import retrofit2.http.POST;
@@ -18,5 +19,5 @@ import retrofit2.http.Body;
 public interface RetrofitExecutionData {
     
     @POST("execute")
-    public Call<ExecutionData> sendExecData(@Body ExecutionData execData);
+    public Call<ExecutionResult> sendExecData(@Body ExecutionData execData);
 }

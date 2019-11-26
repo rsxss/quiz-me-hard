@@ -10,12 +10,26 @@ package model.utils;
  * @author NATWORPONGLOYSWAI
  */
 public class ExecutionData {
-    public String code;
-    public String lang;
+    private String code;
+    private String lang;
     
     public ExecutionData(){}
     public ExecutionData(String code, String lang){
         this.code = code;
+        this.lang = lang;
+    }
+    
+    public String getCode(){
+        return this.code;
+    }
+    public String getLang(){
+        return this.lang;
+    }
+    
+    public void setCode(String code){
+        this.code = code;
+    }
+    public void setLang(String lang){
         this.lang = lang;
     }
 }

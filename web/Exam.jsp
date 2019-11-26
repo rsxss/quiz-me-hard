@@ -237,7 +237,14 @@
                                     })
                                 }, function(data, status){
                                     if (status==='success'){
-                                        document.getElementById("output").value = JSON.stringify(data);
+                                        console.log(data);
+                                        let output = null;
+                                        let mode = null;
+                                        if (data.status !== 200){
+                                            output = data.error;
+                                            mode = 'error';
+                                        } document.getElementById("output").value = output;
+                                        document.getElementById("output").style.color = mode==='error' ? 'red' : 'green';
                                     }
                         });
                     };

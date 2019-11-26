@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
 import model.retrofit.RetrofitExecutionData;
+import model.utils.ExecutionResult;
 import model.utils.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -102,13 +103,13 @@ public class ExamServlet extends BaseServlet {
         Gson gson = new Gson();
         ExecutionData execData = gson.fromJson(code, ExecutionData.class);
         
-        sendExecData(execData);
-        
+        ExecutionResult executionResult = sendExecData(execData);
+
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         try{
-            out.write(gson.toJson(execData));
+            out.write(gson.toJson(executionResult));
             out.flush();
         } finally{
             out.close();
@@ -116,13 +117,20 @@ public class ExamServlet extends BaseServlet {
         //getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
     }
     
-    private void sendExecData(ExecutionData execData) throws  IOException{
+    private ExecutionResult sendExecData(ExecutionData execData) throws  IOException{
         Retrofit retrofit = RetrofitClient.getClient(App.EXECUTION_SERVICE_API);
         RetrofitExecutionData red = retrofit.create(RetrofitExecutionData.class);
         
-        Call<ExecutionData> call = red.sendExecData(execData);
-        Response<ExecutionData> response = call.execute();
-        getServletContext().log(String.format("status: %d",response.code()));
+        Call<ExecutionResult> call = red.sendExecData(execData);
+        Response<ExecutionResult> response = call.execute();
+        
+//        getServletContext().log(String.format("response json: %s", new Gson().toJson(response.body())));
+//        getServletContext().log(String.format("response json: %s", response.body().getError()));
+//        getServletContext().log(String.format("totalScore: %.2f",response.body().getCaseSummary().getTotalScore()));
+//        getServletContext().log(String.format("status: %f",response.body().getTotalScore()));
+//        getServletContext().log(String.format("status: %d",response.code()));
+        
+        return response.body();
     }
     
 //    public static ClassroomExam getClassroomExam(EntityManagerFactory emf, int examId){
