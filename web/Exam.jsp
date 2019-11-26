@@ -265,7 +265,11 @@
                     }
                     
                     function sendExecData(){
-                        $.post(
+                        var execRequest;
+                        if (execRequest){
+                            execRequest.abort();
+                        }
+                        execRequest = $.post(
                                 "http://localhost:8080/quiz-me-hard/Exam",
                                 {
                                     requestedBy: '${user.username}',
