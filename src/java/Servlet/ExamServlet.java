@@ -28,6 +28,8 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
+import model.utils.RetrofitClient;
+import retrofit2.Retrofit;
 
 /**
  *
@@ -93,22 +95,18 @@ public class ExamServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String code = "{'code':'x=5\nassert_equal(x,4,10)\nassert_equal(x,5,20)\n','lang':'python'}";
+        String code = request.getParameter("execData");
         Gson gson = new Gson();
         ExecutionData execData = gson.fromJson(code, ExecutionData.class);
-        getServletContext().log("execData");
-        String name = request.getParameter("name");
-        getServletContext().log(name);
-        Enumeration enx = request.getParameterNames();
-        while(enx.hasMoreElements()){
-            getServletContext().log((String) enx.nextElement());
-        }
+        
+        Retrofit retrofit = RetrofitClient.getClient("http://localhost:8001/api/execute");
+        
         
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         try{
-            out.write(gson.toJson(new ExecutionData(code, "python")));
+            out.write(gson.toJson(execData));
             out.flush();
         } finally{
             out.close();

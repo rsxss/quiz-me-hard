@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="addon/hint/show-hint.css">
     <script src="addon/hint/show-hint.js"></script>
     <script src="addon/hint/css-hint.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <style>
         body,h1 {font-family: "Raleway", sans-serif; }
         body, html {height: 100%;background-color: #eee }
@@ -208,9 +209,9 @@
                 <div class="w3-container" >
                     <p></p>
                     <textarea id="code-editor" ></textarea>
-                    <center><button  class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
+                    <center><button onclick="sendExecData()" class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
-                    <textarea readonly="" style="width: 100%;height: 150px;resize: none">Hello World</textarea>
+                    <textarea id="output" readonly style="width: 100%;height: 150px;resize: none">Hello World</textarea>
                     <c:if test="${!sessionScope.user.isAdmin}">
                         <center><button  class="w3-button  w3-yellow w3-border" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                     </c:if>
@@ -225,26 +226,43 @@
                     editor.setSize("100%", 250);
                 </script>
                 <script>
+                    function sendExecData(){
+                        $.post(
+                                "http://localhost:8080/quiz-me-hard/Exam",
+                                {
+                                    requestedBy: '${user.username}',
+                                    execData: JSON.stringify({
+                                        code: editor.getValue(),
+                                        lang: 'python'
+                                    })
+                                }, function(data, status){
+                                    if (status==='success'){
+                                        document.getElementById("output").value = JSON.stringify(data);
+                                    }
+                        });
+                    };
+                    
                     function checkSubmit() {
                         if (confirm("Are you sure you want to submit?")) {
                             alert("Your Answer has been submitted.");
-                            const formData = new FormData();
-                            formData.append('code', JSON.stringify(editor.getValue()));
-                            formData.append('lang', 'python');
-                            fetchOptions = {
-                                method: 'POST',
-//                                headers: {
-//                                    'Content-Type': //'application/json;charset=utf-8'
-//                                }, 
-                                body: formData
-                            };
-                            fetch("http://localhost:8080/quiz-me-hard/Exam", fetchOptions)
-                                    .then(response => response.json())
-                                    .catch(rejected => console.log("rejected:", rejected))
-                                    .then(json => console.log("json",json));
+                            sendExecData();
+//                            const formData = new FormData();
+//                            formData.append('code', JSON.stringify(editor.getValue()));
+//                            formData.append('lang', 'python');
+//                            fetchOptions = {
+//                                method: 'POST',
+////                                headers: {
+////                                    'Content-Type': //'application/json;charset=utf-8'
+////                                }, 
+//                                body: formData
+//                            };
+//                            fetch("http://localhost:8080/quiz-me-hard/Exam", fetchOptions)
+//                                    .then(response => response.json())
+//                                    .catch(rejected => console.log("rejected:", rejected))
+//                                    .then(json => console.log("json",json));
                             //window.location.replace("SelectExam?className=${classroomName}");
                         }
-                    }
+                    };
                 </script>
             </div>
     </body>
