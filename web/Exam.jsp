@@ -48,6 +48,18 @@
             bottom: 0;
             left: 0;
         }
+        #output {
+            width: 100%;
+            height: 150px;
+            resize: none;
+            background-color: hsl(0, 0%, 100%);
+            border: 1px solid hsl(0, 0%, 66%);
+            flex-direction: column;
+            font-size: 15px;
+            line-height: 22.5px;
+            padding: 2px;
+            overflow-y: scroll;
+        }
     </style>
     <body>
         <%--<c:if test="${user.equals('admin')}">
@@ -211,7 +223,8 @@
                     <textarea id="code-editor" ></textarea>
                     <center><button onclick="sendExecData()" class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
-                    <textarea id="output" readonly style="width: 100%;height: 150px;resize: none">Hello World</textarea>
+                    <!--<textarea id="output" readonly style="width: 100%;height: 150px;resize: none">Hello World</textarea>-->
+                    <div id="output" ></div>
                     <c:if test="${!sessionScope.user.isAdmin}">
                         <center><button  class="w3-button  w3-yellow w3-border" style="margin-top: 10px" onclick="checkSubmit()">Submit Answer</button></center>
                     </c:if>
@@ -226,6 +239,31 @@
                     editor.setSize("100%", 250);
                 </script>
                 <script>
+                    function appendOutput(output, mode){
+                        if (mode==='success'){
+                            for (let k in output){
+                                if (output.hasOwnProperty(k)){
+                                    let newOut='';
+                                    newOut += k+': ';
+                                    newOut += output[k].result ? 'Passed':'Failed';
+                                    newOut += '\n';
+                                    let para = document.createElement("span");
+                                    para.style.color = output[k].result ? 'green' : 'red';
+                                    let node = document.createTextNode(newOut);
+                                    para.appendChild(node);
+                                    para.appendChild(document.createElement("br"));
+                                    document.getElementById("output").appendChild(para);
+                                }
+                            }
+                        } else if (mode==='error'){
+                            let para = document.createElement("span");
+                            let node = document.createTextNode(output);
+                            para.appendChild(node);
+                            document.getElementById("output").appendChild(para);
+                        };
+//                        return newOut;
+                    }
+                    
                     function sendExecData(){
                         $.post(
                                 "http://localhost:8080/quiz-me-hard/Exam",
@@ -238,13 +276,17 @@
                                 }, function(data, status){
                                     if (status==='success'){
                                         console.log(data);
-                                        let output = null;
                                         let mode = null;
+                                        document.getElementById("output").innerHTML = '';
                                         if (data.status !== 200){
-                                            output = data.error;
                                             mode = 'error';
-                                        } document.getElementById("output").value = output;
-                                        document.getElementById("output").style.color = mode==='error' ? 'red' : 'green';
+                                            appendOutput(data.error, mode);
+                                        } else {
+                                            mode = 'success';
+                                            appendOutput(data.results.case_results, mode);
+                                        };
+                                        document.getElementById("output")
+                                                .style.color = mode === 'error' ? 'red' : 'black';
                                     }
                         });
                     };
