@@ -17,6 +17,6 @@ import retrofit2.http.Body;
  */
 public interface RetrofitExecutionData {
     
-    @POST("post")
+    @POST("execute")
     public Call<ExecutionData> sendExecData(@Body ExecutionData execData);
 }

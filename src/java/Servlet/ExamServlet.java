@@ -28,7 +28,10 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
+import model.retrofit.RetrofitExecutionData;
 import model.utils.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -99,8 +102,7 @@ public class ExamServlet extends BaseServlet {
         Gson gson = new Gson();
         ExecutionData execData = gson.fromJson(code, ExecutionData.class);
         
-        Retrofit retrofit = RetrofitClient.getClient("http://localhost:8001/api/execute");
-        
+        sendExecData(execData);
         
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
@@ -112,6 +114,15 @@ public class ExamServlet extends BaseServlet {
             out.close();
         }
         //getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
+    }
+    
+    private void sendExecData(ExecutionData execData) throws  IOException{
+        Retrofit retrofit = RetrofitClient.getClient(App.EXECUTION_SERVICE_API);
+        RetrofitExecutionData red = retrofit.create(RetrofitExecutionData.class);
+        
+        Call<ExecutionData> call = red.sendExecData(execData);
+        Response<ExecutionData> response = call.execute();
+        getServletContext().log(String.format("status: %d",response.code()));
     }
     
 //    public static ClassroomExam getClassroomExam(EntityManagerFactory emf, int examId){
