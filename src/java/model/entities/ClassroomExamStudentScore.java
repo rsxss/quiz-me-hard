@@ -6,7 +6,6 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,21 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ClassroomExamStudentScore.findAll", query = "SELECT c FROM ClassroomExamStudentScore c")
     , @NamedQuery(name = "ClassroomExamStudentScore.findById", query = "SELECT c FROM ClassroomExamStudentScore c WHERE c.id = :id")
+    , @NamedQuery(name = "ClassroomExamStudentScore.findByScore", query = "SELECT c FROM ClassroomExamStudentScore c WHERE c.score = :score")
+    , @NamedQuery(name = "ClassroomExamStudentScore.findByExamByStudent", query = "SELECT c FROM ClassroomExamStudentScore c WHERE c.examId = :examId AND c.studentId = :studentId")
     , @NamedQuery(name = "ClassroomExamStudentScore.findByMaxTotalScore", query = "SELECT c FROM ClassroomExamStudentScore c WHERE c.maxTotalScore = :maxTotalScore")})
 public class ClassroomExamStudentScore implements Serializable {
-
-    @Column(name = "student_id")
-    private BigInteger studentId;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "code")
-    private String code;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
-    @Column(name = "score")
-    private float score;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,6 +43,14 @@ public class ClassroomExamStudentScore implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "code")
+    private String code;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "score")
+    private float score;
     @Basic(optional = false)
     @NotNull
     @Column(name = "max_total_score")
@@ -62,6 +58,9 @@ public class ClassroomExamStudentScore implements Serializable {
     @JoinColumn(name = "exam_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ClassroomExam examId;
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    @ManyToOne
+    private Student studentId;
 
     public ClassroomExamStudentScore() {
     }
@@ -84,6 +83,21 @@ public class ClassroomExamStudentScore implements Serializable {
         this.id = id;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
 
     public float getMaxTotalScore() {
         return maxTotalScore;
@@ -99,6 +113,14 @@ public class ClassroomExamStudentScore implements Serializable {
 
     public void setExamId(ClassroomExam examId) {
         this.examId = examId;
+    }
+
+    public Student getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Student studentId) {
+        this.studentId = studentId;
     }
 
     @Override
@@ -123,31 +145,7 @@ public class ClassroomExamStudentScore implements Serializable {
 
     @Override
     public String toString() {
-        return "jpa.entities.ClassroomExamStudentScore[ id=" + id + " ]";
-    }
-
-    public BigInteger getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(BigInteger studentId) {
-        this.studentId = studentId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
+        return "model.entities.ClassroomExamStudentScore[ id=" + id + " ]";
     }
     
 }

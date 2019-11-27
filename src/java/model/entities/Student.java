@@ -6,6 +6,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +15,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,6 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s")
     , @NamedQuery(name = "Student.findById", query = "SELECT s FROM Student s WHERE s.id = :id")})
 public class Student implements Serializable {
+
+    @OneToMany(mappedBy = "studentId")
+    private Collection<ClassroomExamStudentScore> classroomExamStudentScoreCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -87,6 +93,15 @@ public class Student implements Serializable {
     @Override
     public String toString() {
         return "jpa.entities.Student[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ClassroomExamStudentScore> getClassroomExamStudentScoreCollection() {
+        return classroomExamStudentScoreCollection;
+    }
+
+    public void setClassroomExamStudentScoreCollection(Collection<ClassroomExamStudentScore> classroomExamStudentScoreCollection) {
+        this.classroomExamStudentScoreCollection = classroomExamStudentScoreCollection;
     }
     
 }

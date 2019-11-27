@@ -221,7 +221,7 @@
                 <div class="w3-container" >
                     <p></p>
                     <textarea id="code-editor" ></textarea>
-                    <center><button onclick="sendExecData()" class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
+                    <center><button onclick="sendExecData(0)" class="w3-button  w3-teal w3-border" style="margin-top: 10px">&blacktriangleright; Run</button></center>
                     Output:
                     <!--<textarea id="output" readonly style="width: 100%;height: 150px;resize: none">Hello World</textarea>-->
                     <div id="output" ></div>
@@ -264,7 +264,7 @@
 //                        return newOut;
                     }
                     
-                    function sendExecData(){
+                    function sendExecData(submitted){
                         var execRequest;
                         if (execRequest){
                             execRequest.abort();
@@ -273,6 +273,7 @@
                                 "http://localhost:8080/quiz-me-hard/Exam",
                                 {
                                     examId: '${classroomExam.id}',
+                                    confirmSubmit: submitted,
                                     requestedBy: '${user.username}',
                                     execData: JSON.stringify({
                                         code: editor.getValue(),
@@ -299,7 +300,7 @@
                     function checkSubmit() {
                         if (confirm("Are you sure you want to submit?")) {
                             alert("Your Answer has been submitted.");
-                            sendExecData();
+                            sendExecData(1);
 //                            const formData = new FormData();
 //                            formData.append('code', JSON.stringify(editor.getValue()));
 //                            formData.append('lang', 'python');

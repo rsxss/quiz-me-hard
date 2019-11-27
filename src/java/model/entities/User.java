@@ -45,6 +45,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findStudent", query = "SELECT s FROM User u JOIN u.student s WHERE u.id = :id")})
 public class User implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Student> studentCollection;
+
 private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -188,6 +191,15 @@ private static final long serialVersionUID = 1L;
     @Override
     public String toString() {
         return "jpa.entities.User[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Student> getStudentCollection() {
+        return studentCollection;
+    }
+
+    public void setStudentCollection(Collection<Student> studentCollection) {
+        this.studentCollection = studentCollection;
     }
     
 }

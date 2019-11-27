@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -18,6 +19,7 @@ import model.controller.exceptions.NonexistentEntityException;
 import model.controller.exceptions.RollbackFailureException;
 import model.entities.ClassroomExam;
 import model.entities.ClassroomExamStudentScore;
+import model.entities.Student;
 
 /**
  *
@@ -170,6 +172,19 @@ public class ClassroomExamStudentScoreJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(ClassroomExamStudentScore.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+    public ClassroomExamStudentScore findClassroomExamStudentScoreByExamByStudent(ClassroomExam ce, Student si) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<ClassroomExamStudentScore> query = em.createNamedQuery(
+                    "ClassroomExamStudentScore.findByExamByStudent", ClassroomExamStudentScore.class);
+            query.setParameter("examId", ce);
+            query.setParameter("studentId", si);
+            return query.getSingleResult();
         } finally {
             em.close();
         }

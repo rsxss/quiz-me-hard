@@ -31,9 +31,11 @@ import java.math.BigInteger;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpSession;
 import model.controller.ClassroomExamStudentScoreJpaController;
 import model.controller.UserJpaController;
+import model.controller.exceptions.RollbackFailureException;
 import model.entities.ClassroomExamStudentScore;
 import model.entities.Student;
 import model.entities.User;
@@ -113,25 +115,22 @@ public class ExamServlet extends BaseServlet {
         
         Integer examId = Integer.valueOf(request.getParameter("examId"));
         String code = request.getParameter("execData");
+        Boolean isSubmit = Integer.valueOf(request.getParameter("confirmSubmit"))==1;
         
         ClassroomExamJpaController cejc = new ClassroomExamJpaController(utx, emf);
         ClassroomExam classroomExam = cejc.findClassroomExam(examId);
         
         Gson gson = new Gson();
         ExecutionData execData = gson.fromJson(code, ExecutionData.class);
-
+        
+        String userCode = execData.getCode();
+        
         execData.setCode(
                 appendTestCase(execData.getCode(), 
                         classroomExam.getTestCase()
                 )
         );
         ExecutionResult executionResult = sendExecData(execData);
-        
-//        try {
-//            setResultFor(user, executionResult, examId, execData.getCode());
-//        } catch (Exception ex) {
-//            Logger.getLogger(ExamServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
@@ -142,24 +141,50 @@ public class ExamServlet extends BaseServlet {
         } finally{
             out.close();
         }
-        //getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
+        
+        if (Objects.isNull(executionResult.getError()) && isSubmit){
+            setResultFor(user, executionResult, examId, userCode);
+        }
     }
     
-    private void setResultFor(User user, ExecutionResult executionResult, Integer examId, String code) throws Exception{
+    private void setResultFor(User user, ExecutionResult executionResult, Integer examId, String code){
         Student student = user.getStudent();
+        if (Objects.isNull(student)){
+            return;
+        }
+        
         ClassroomExamJpaController cejc = new ClassroomExamJpaController(utx, emf);
         ClassroomExam classroomExam = cejc.findClassroomExam(examId);
         
-        ClassroomExamStudentScore classroomExamStudentScore = new ClassroomExamStudentScore();
-        classroomExamStudentScore.setExamId(classroomExam);
-        classroomExamStudentScore.setStudentId(BigInteger.valueOf(student.getId()));
-        classroomExamStudentScore.setCode(code);
-        classroomExamStudentScore.setScore((float)executionResult.getCaseSummary().getTotalScore());
-        classroomExamStudentScore.setMaxTotalScore(35);
-        
         ClassroomExamStudentScoreJpaController cessjc = new ClassroomExamStudentScoreJpaController(utx, emf);
-        cessjc.create(classroomExamStudentScore);
         
+        try {
+            ClassroomExamStudentScore cess = cessjc.findClassroomExamStudentScoreByExamByStudent(classroomExam, student);
+            cess.setExamId(classroomExam);
+            cess.setStudentId(student);
+            cess.setCode(code);
+            cess.setScore((float)executionResult.getCaseSummary().getTotalScore());
+            cess.setMaxTotalScore(35);
+            try {
+                cessjc.edit(cess);
+            } catch (RollbackFailureException ex) {
+                Logger.getLogger(ExamServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(ExamServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NoResultException nre){
+            ClassroomExamStudentScore classroomExamStudentScore = new ClassroomExamStudentScore();
+            classroomExamStudentScore.setExamId(classroomExam);
+            classroomExamStudentScore.setStudentId(student);
+            classroomExamStudentScore.setCode(code);
+            classroomExamStudentScore.setScore((float)executionResult.getCaseSummary().getTotalScore());
+            classroomExamStudentScore.setMaxTotalScore(35);
+            try {
+                cessjc.create(classroomExamStudentScore);
+            } catch (Exception ex) {
+                Logger.getLogger(ExamServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     private String appendTestCase(String code, String testCase){
