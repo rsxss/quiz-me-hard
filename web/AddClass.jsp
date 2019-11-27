@@ -47,7 +47,7 @@
                     <p>Class name : <input type="text" name="className" placeholder="Enter here..." class="w3-input"></p>
                     <p>Teacher name : </p>
                     <p></p>
-                    <select class="w3-select" name="option">
+                    <select class="w3-select" name="teacher">
                         <c:forEach items="${requestScope.users}" var="user" varStatus="vs">
                             <option value="${user.id}">${user.firstName} ${user.lastName}</option>
                         </c:forEach>
@@ -55,11 +55,11 @@
                     <p>Class details :</p>
                     <p><textarea rows="4" cols="50" name="classDescription" placeholder="Enter here..." class="w3-input"></textarea>
 
-                    
+                    <%--
                     <c:forEach items="${requestScope.users}" var="user" varStatus="vs">
                         <c:set var="userName" value="${user.firstName} ${user.lastName}"/>
                         <input type="radio" name="teacher" value="${user.id}"/><c:out value="${pageScope.userName}"/><br/>
-                    </c:forEach>
+                    </c:forEach>--%>
                         
                     <div class="w3-display-bottomright w3-padding-large ">
                         <a href="SelectClass" class="w3-btn w3-red w3-border w3-border w3-round-large" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border w3-border w3-round-large">
