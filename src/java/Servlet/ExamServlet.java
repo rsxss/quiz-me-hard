@@ -27,7 +27,16 @@ import model.entities.ClassroomExam;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
+import model.controller.ClassroomExamStudentScoreJpaController;
+import model.controller.UserJpaController;
+import model.entities.ClassroomExamStudentScore;
+import model.entities.Student;
+import model.entities.User;
 import model.retrofit.RetrofitExecutionData;
 import model.utils.ExecutionResult;
 import model.utils.RetrofitClient;
@@ -99,6 +108,9 @@ public class ExamServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        
         Integer examId = Integer.valueOf(request.getParameter("examId"));
         String code = request.getParameter("execData");
         
@@ -114,7 +126,13 @@ public class ExamServlet extends BaseServlet {
                 )
         );
         ExecutionResult executionResult = sendExecData(execData);
-
+        
+//        try {
+//            setResultFor(user, executionResult, examId, execData.getCode());
+//        } catch (Exception ex) {
+//            Logger.getLogger(ExamServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
@@ -125,6 +143,23 @@ public class ExamServlet extends BaseServlet {
             out.close();
         }
         //getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
+    }
+    
+    private void setResultFor(User user, ExecutionResult executionResult, Integer examId, String code) throws Exception{
+        Student student = user.getStudent();
+        ClassroomExamJpaController cejc = new ClassroomExamJpaController(utx, emf);
+        ClassroomExam classroomExam = cejc.findClassroomExam(examId);
+        
+        ClassroomExamStudentScore classroomExamStudentScore = new ClassroomExamStudentScore();
+        classroomExamStudentScore.setExamId(classroomExam);
+        classroomExamStudentScore.setStudentId(BigInteger.valueOf(student.getId()));
+        classroomExamStudentScore.setCode(code);
+        classroomExamStudentScore.setScore((float)executionResult.getCaseSummary().getTotalScore());
+        classroomExamStudentScore.setMaxTotalScore(35);
+        
+        ClassroomExamStudentScoreJpaController cessjc = new ClassroomExamStudentScoreJpaController(utx, emf);
+        cessjc.create(classroomExamStudentScore);
+        
     }
     
     private String appendTestCase(String code, String testCase){
