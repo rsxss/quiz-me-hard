@@ -99,10 +99,20 @@ public class ExamServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Integer examId = Integer.valueOf(request.getParameter("examId"));
         String code = request.getParameter("execData");
+        
+        ClassroomExamJpaController cejc = new ClassroomExamJpaController(utx, emf);
+        ClassroomExam classroomExam = cejc.findClassroomExam(examId);
+        
         Gson gson = new Gson();
         ExecutionData execData = gson.fromJson(code, ExecutionData.class);
-        
+
+        execData.setCode(
+                appendTestCase(execData.getCode(), 
+                        classroomExam.getTestCase()
+                )
+        );
         ExecutionResult executionResult = sendExecData(execData);
 
         PrintWriter out = response.getWriter();
@@ -115,6 +125,13 @@ public class ExamServlet extends BaseServlet {
             out.close();
         }
         //getServletContext().getRequestDispatcher("/Exam.jsp").forward(request, response);
+    }
+    
+    private String appendTestCase(String code, String testCase){
+        StringBuilder appendedString = new StringBuilder(code);
+        appendedString.append("\n");
+        appendedString.append(testCase);
+        return appendedString.toString();
     }
     
     private ExecutionResult sendExecData(ExecutionData execData) throws  IOException{

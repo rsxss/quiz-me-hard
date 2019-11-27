@@ -272,6 +272,7 @@
                         execRequest = $.post(
                                 "http://localhost:8080/quiz-me-hard/Exam",
                                 {
+                                    examId: '${classroomExam.id}',
                                     requestedBy: '${user.username}',
                                     execData: JSON.stringify({
                                         code: editor.getValue(),
