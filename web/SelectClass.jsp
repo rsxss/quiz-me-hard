@@ -34,6 +34,13 @@
                 margin: 20px;
             }
         </style>
+        <script>
+            function checkDelete(className, uriString){
+                if (confirm("Are you sure to delete "+className)){
+                    window.location.href = uriString;
+                }
+            }
+            </script>
     </head>
     <body>
         <%--<c:if test="${user.equals('admin')}">
@@ -149,7 +156,7 @@
                                 </h3>
                                 <c:if test="${sessionScope.user.isAdmin}">
                                     <a href="#" class="w3-button  w3-yellow w3-round" >Edit</a>
-                                    <a href="#" class="w3-button  w3-red w3-display-topright w3-circle" style="margin: 10px">X</a>
+                                    <a href="javascript:checkDelete('${classroom.classroomName}', 'DeleteClass?classId=${classroom.id}');" class="w3-button  w3-red w3-display-topright w3-circle" style="margin: 10px">X</a>
                                 </c:if>
                             </div>
                         </div>

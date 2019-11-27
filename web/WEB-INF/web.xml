@@ -51,6 +51,10 @@
         <servlet-name>DeleteExamServlet</servlet-name>
         <servlet-class>Servlet.DeleteExamServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteClassServlet</servlet-name>
+        <servlet-class>Servlet.DeleteClassServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClassInfoServlet</servlet-name>
         <url-pattern>/ClassInfo</url-pattern>
@@ -90,6 +94,10 @@
     <servlet-mapping>
         <servlet-name>DeleteExamServlet</servlet-name>
         <url-pattern>/DeleteExam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteClassServlet</servlet-name>
+        <url-pattern>/DeleteClass</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -19,6 +19,9 @@
 *.tar.gz
 *.rar
 
+# Build Files #
+build.xml
+
 # Netbeans
 nbproject/
 build/
