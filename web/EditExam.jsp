@@ -43,7 +43,7 @@
                 </div> 
             </div>
             <div class="box w3-display-middle w3-padding-large" >
-                <h3>Add Exam</h3>
+                <h3>Edit ${classroomExam.name}</h3>
                 <form action=""  method="post">
                     <p>Title : <input type="text" name="examName" placeholder="Enter here..." class="w3-input"></p>
                     <p>Description :</p>
@@ -51,6 +51,7 @@
                     <p>Test Case :</p>
                     <p><textarea rows="5" cols="70" name="examTestCase" placeholder="Enter here..." class="w3-input"></textarea>
                     <input type="hidden" name="className" value="${className}"/>
+                    <input type="hidden" value="${classroomExam.id}" name="examId"/>
                     <div class="w3-right  w3-padding-large ">
                         <a href="SelectExam?className=${className}" class="w3-btn w3-red w3-border  w3-round-large" >Cancel</a> <input type="submit" value="submit" class="w3-btn w3-teal w3-border  w3-round-large">
                     </div>

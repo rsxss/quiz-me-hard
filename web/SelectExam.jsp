@@ -166,7 +166,7 @@
                                         <td>
                                             <a href="Exam?className=${classroom.classroomName}&examId=${classroomExam.id}" 
                                                class="w3-button w3-blue">View</a>
-                                               <a href="#"  class="w3-button w3-yellow">Edit</a>
+                                               <a href="EditExam?className=${classroom.classroomName}&examId=${classroomExam.id}"  class="w3-button w3-yellow">Edit</a>
                                         </td> 
                                         <td><input type="checkbox" name="${classroomExam.id}" class="w3-check"></td>                            
                                     </c:when>

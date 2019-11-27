@@ -59,6 +59,10 @@
         <servlet-name>EditClassServlet</servlet-name>
         <servlet-class>Servlet.EditClassServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditExamServlet</servlet-name>
+        <servlet-class>Servlet.EditExamServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClassInfoServlet</servlet-name>
         <url-pattern>/ClassInfo</url-pattern>
@@ -106,6 +110,10 @@
     <servlet-mapping>
         <servlet-name>EditClassServlet</servlet-name>
         <url-pattern>/EditClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditExamServlet</servlet-name>
+        <url-pattern>/EditExam</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
