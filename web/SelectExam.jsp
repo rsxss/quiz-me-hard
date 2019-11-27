@@ -146,7 +146,6 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th>Tag</th>
                             <c:choose>
                                 <c:when test="${sessionScope.user.isAdmin}">
                                     <th></th>
@@ -162,7 +161,6 @@
                             <tr>
                                 <td>${vs.count}</td>
                                 <td>${classroomExam.name}</td>
-                                <td>Tag</td>
                                 <c:choose>
                                     <c:when test="${sessionScope.user.isAdmin}">
                                         <td>
